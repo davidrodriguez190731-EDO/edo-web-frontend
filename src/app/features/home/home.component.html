@@ -1,0 +1,262 @@
+<!-- ════════ HERO ════════ -->
+<section class="hero-section" style="min-height:100vh; display:flex; align-items:center; padding-top:68px;">
+  <div class="circuit-overlay"></div>
+  <div class="glow-orb"></div>
+
+  <div class="container" style="width:100%; padding: 60px 2rem;">
+    <div class="hero-grid">
+
+      <!-- Copy -->
+      <div class="hero-copy">
+        <div class="anim-1">
+          <span class="section-label section-label--light">
+            <span class="dot-live"></span>
+            Software a la medida · Montería, Colombia
+          </span>
+        </div>
+
+        <h1 class="anim-2 hero-title">
+          ¿Cuántas horas pierde<br>
+          <em>su equipo</em> haciendo<br>
+          lo que un sistema<br>
+          haría en segundos?
+        </h1>
+
+        <p class="anim-3 hero-subtitle">
+          Construimos aplicaciones web empresariales que eliminan el trabajo manual,
+          conectan sus procesos y le devuelven el tiempo a su equipo.
+        </p>
+
+        <div class="anim-4 hero-ctas">
+          <a routerLink="/contacto" class="btn btn--primary pulse-glow">
+            Quiero automatizar mi empresa →
+          </a>
+          <a routerLink="/portafolio" class="btn btn--ghost">
+            Ver proyectos
+          </a>
+        </div>
+
+        <!-- Loss counter -->
+        <div class="anim-5 loss-counter">
+          <div class="loss-label">⏱ Desde que abrió esta página</div>
+          <div class="loss-number">{{ hoursLost }}</div>
+          <div class="loss-desc">
+            horas-hombre perdidas en trabajo manual<br>
+            en empresas colombianas como la suya
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="float hero-visual">
+        <!-- Toggle buttons -->
+        <div class="chaos-toggle">
+          <button [class.active]="showChaos" (click)="showChaos=true" class="toggle-btn toggle-chaos">
+            ❌ Sin sistema
+          </button>
+          <button [class.active]="!showChaos" (click)="showChaos=false" class="toggle-btn toggle-order">
+            ✅ Con sistema
+          </button>
+        </div>
+
+        <!-- Chaos side -->
+        <div *ngIf="showChaos" class="visual-panel">
+          <div *ngFor="let item of chaosItems" class="chaos-item">
+            <span class="item-emoji">{{ item.emoji }}</span>
+            <div class="item-body">
+              <div class="item-app" [style.color]="item.color">{{ item.app }}</div>
+              <div class="item-msg">{{ item.msg }}</div>
+            </div>
+            <span class="item-time">{{ item.time }}</span>
+          </div>
+          <div class="visual-verdict chaos-verdict">
+            ↑ Información dispersa. Sin trazabilidad. Sin control.
+          </div>
+        </div>
+
+        <!-- Order side -->
+        <div *ngIf="!showChaos" class="visual-panel">
+          <div class="order-stats-bar">
+            <div *ngFor="let s of orderStats" class="order-stat">
+              <div class="order-stat-num">{{ s.n }}</div>
+              <div class="order-stat-label">{{ s.label }}</div>
+            </div>
+          </div>
+          <div *ngFor="let item of orderItems" class="order-item">
+            <span class="item-emoji">{{ item.icon }}</span>
+            <div class="item-body">
+              <div class="item-app" [style.color]="item.color">{{ item.text }}</div>
+              <div class="item-msg">{{ item.sub }}</div>
+            </div>
+          </div>
+          <div class="visual-verdict order-verdict">
+            ↑ Todo en un sistema. Trazable. Controlado. Automático.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div *ngFor="let s of stats" class="stat-item">
+      <div class="stat-icon">{{ s.icon }}</div>
+      <div class="stat-val">{{ s.val }}</div>
+      <div class="stat-label">{{ s.label }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PROBLEM ════════ -->
+<section class="section bg-off-white">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-label">El problema real</span>
+      <h2>Su empresa merece algo mejor<br>que Excel y WhatsApp</h2>
+      <p class="section-desc">Estas son las señales de que su operación está perdiendo dinero y talento:</p>
+    </div>
+    <div class="grid-3">
+      <div *ngFor="let p of problems" class="card problem-card">
+        <div class="problem-icon">{{ p.icon }}</div>
+        <p class="problem-pain">{{ p.pain }}</p>
+        <div class="problem-cost">
+          <span class="arrow-red">→</span> {{ p.cost }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SERVICES ════════ -->
+<section class="section hero-section" style="min-height:auto;">
+  <div class="circuit-overlay"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-header text-center">
+      <span class="section-label section-label--light">Servicios</span>
+      <h2 style="color:#fff;">Construimos su solución<br>de principio a fin</h2>
+    </div>
+    <div class="services-grid">
+      <div *ngFor="let s of services" class="service-card">
+        <div class="service-icon-box">{{ s.icon }}</div>
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FEATURED PROJECTS ════════ -->
+<section class="section bg-off-white" *ngIf="projects.length">
+  <div class="container">
+    <div class="section-header flex-between">
+      <div>
+        <span class="section-label">Portafolio</span>
+        <h2>Proyectos en producción</h2>
+      </div>
+      <a routerLink="/portafolio" class="btn btn--blue">Ver todos →</a>
+    </div>
+    <div class="grid-2">
+      <div *ngFor="let p of projects" class="card project-card">
+        <div class="project-header" [style.background]="p.color + '18'">
+          <div class="project-badges">
+            <span class="badge badge--green">{{ p.status }}</span>
+            <span class="badge badge--blue">{{ p.category }}</span>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>{{ p.name }}</h3>
+          <p>{{ p.description }}</p>
+          <ul class="highlight-list">
+            <li *ngFor="let h of p.highlights.slice(0,3)"><span class="arrow-accent">→</span> {{ h }}</li>
+          </ul>
+          <div class="tag-row">
+            <span *ngFor="let t of p.stack" class="tag">{{ t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PROCESS ════════ -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-label">Cómo trabajamos</span>
+      <h2>De la idea al sistema<br>en producción</h2>
+    </div>
+    <div class="process-grid">
+      <div *ngFor="let step of process; let i = index" class="process-step">
+        <div class="step-num" [class.step-active]="i === 0">{{ step.n }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ BLOG PREVIEW ════════ -->
+<section class="section bg-off-white" *ngIf="blogs.length">
+  <div class="container">
+    <div class="section-header flex-between">
+      <div>
+        <span class="section-label">Blog</span>
+        <h2>Artículos recientes</h2>
+      </div>
+      <a routerLink="/blog" class="btn btn--blue">Ver todos →</a>
+    </div>
+    <div class="grid-3">
+      <div *ngFor="let b of blogs" class="card blog-card">
+        <div class="blog-top-bar" [style.background]="b.category === 'Caso de éxito' ? '#38A169' : b.category === 'Técnico' ? '#7C3AED' : '#1B4B8A'"></div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="badge badge--blue">{{ b.category }}</span>
+            <span class="read-time">{{ b.readTime }} lectura</span>
+          </div>
+          <h3>{{ b.title }}</h3>
+          <p>{{ b.excerpt }}</p>
+          <div class="blog-date">{{ b.date | date:'d MMM yyyy':'':'es' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ CTA FINAL ════════ -->
+<section class="hero-section" style="padding: 100px 0; min-height:auto;">
+  <div class="circuit-overlay"></div>
+  <div class="container text-center" style="position:relative;z-index:1;">
+    <h2 style="color:#fff; font-size:clamp(36px,5vw,60px); margin-bottom:20px;">
+      Deje de perder tiempo.<br><em style="color:var(--accent)">Empiece hoy.</em>
+    </h2>
+    <p style="color:rgba(255,255,255,0.5); font-size:18px; margin-bottom:40px; font-weight:300;">
+      Diagnóstico inicial gratuito. Propuesta técnica sin compromiso.<br>
+      Respuesta en menos de 24 horas.
+    </p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a routerLink="/contacto" class="btn btn--primary pulse-glow">
+        Solicitar diagnóstico gratuito →
+      </a>
+      <a href="https://wa.me/573000000000" target="_blank" class="btn whatsapp-btn">
+        💬 WhatsApp directo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="footer-brand">EDO Ingeniería Digital</div>
+      <div class="footer-sub">Montería, Córdoba · Colombia · © 2025</div>
+    </div>
+    <nav class="footer-nav">
+      <a routerLink="/servicios">Servicios</a>
+      <a routerLink="/portafolio">Portafolio</a>
+      <a routerLink="/blog">Blog</a>
+      <a routerLink="/contacto">Contacto</a>
+    </nav>
+    <div class="footer-stack">Angular · Flask · PostgreSQL · Railway</div>
+  </div>
+</footer>

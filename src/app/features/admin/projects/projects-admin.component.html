@@ -1,0 +1,125 @@
+<div class="admin-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Proyectos del portafolio</h1>
+      <p>{{ projects.length }} proyectos publicados</p>
+    </div>
+    <button (click)="openCreate()" class="btn btn--blue">
+      + Nuevo proyecto
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">Cargando proyectos...</div>
+
+  <!-- List -->
+  <div *ngIf="!loading" class="item-list">
+    <div *ngFor="let p of projects" class="item-row">
+      <div class="item-color-dot" [style.background]="p.color || '#1B4B8A'"></div>
+
+      <div class="item-info">
+        <div class="item-name">{{ p.name }}</div>
+        <div class="item-meta">
+          <span>{{ p.category }}</span>
+          <span class="badge badge--green">{{ p.status }}</span>
+          <span *ngIf="!p.visible" class="badge" style="background:#FED7D7;color:#C53030;">Oculto</span>
+        </div>
+      </div>
+
+      <div class="item-tags">
+        <span *ngFor="let t of p.stack.slice(0,3)" class="tag">{{ t }}</span>
+      </div>
+
+      <div class="item-actions">
+        <button (click)="openEdit(p)" class="icon-btn icon-btn--edit" title="Editar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </button>
+        <button (click)="delete(p.id)" class="icon-btn icon-btn--delete" title="Eliminar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="projects.length === 0" class="empty-state">
+      No hay proyectos todavía. ¡Crea el primero!
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div *ngIf="showModal" class="modal-backdrop" (click)="showModal=false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ form.id ? 'Editar proyecto' : 'Nuevo proyecto' }}</h3>
+      <button (click)="showModal=false" class="close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre del proyecto</label>
+        <input type="text" [(ngModel)]="form.name" placeholder="Ej: EDO Gestión Mantenimiento" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoría</label>
+          <input type="text" [(ngModel)]="form.category" placeholder="Ej: Sistema de Gestión" />
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select [(ngModel)]="form.status">
+            <option *ngFor="let s of statusOptions">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Stack (separado por comas)</label>
+        <input type="text" [(ngModel)]="form.stackStr" placeholder="Angular, Flask, PostgreSQL" />
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea rows="3" [(ngModel)]="form.description" placeholder="Descripción breve..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Highlights (uno por línea)</label>
+        <textarea rows="4" [(ngModel)]="form.highlightsStr" placeholder="Ciclo completo de órdenes&#10;Dashboard en tiempo real"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Color de acento</label>
+          <input type="color" [(ngModel)]="form.color" style="height:42px;cursor:pointer;" />
+        </div>
+        <div class="form-group">
+          <label>Orden</label>
+          <input type="number" [(ngModel)]="form.order" placeholder="1" />
+        </div>
+      </div>
+      <div class="form-checks">
+        <label class="check-label">
+          <input type="checkbox" [(ngModel)]="form.featured" />
+          Proyecto destacado
+        </label>
+        <label class="check-label">
+          <input type="checkbox" [(ngModel)]="form.visible" />
+          Visible en el sitio
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="showModal=false" class="btn btn--outline">Cancelar</button>
+      <button (click)="save()" class="btn btn--blue" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Guardar proyecto' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div *ngIf="toast" class="toast" [class.toast--success]="toastType==='success'" [class.toast--danger]="toastType==='danger'">
+  {{ toastType === 'success' ? '✅' : '🗑️' }} {{ toast }}
+</div>
