@@ -1,125 +1,178 @@
 <div class="admin-page">
+
   <!-- Header -->
   <div class="page-header">
     <div>
       <h1>Proyectos del portafolio</h1>
-      <p>{{ projects.length }} proyectos publicados</p>
+      <p>{{ projects.length }} proyecto{{ projects.length !== 1 ? 's' : '' }} registrado{{ projects.length !== 1 ? 's' : '' }}</p>
     </div>
     <button (click)="openCreate()" class="btn btn--blue">
-      + Nuevo proyecto
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nuevo proyecto
     </button>
   </div>
 
   <!-- Loading -->
-  <div *ngIf="loading" class="loading-state">Cargando proyectos...</div>
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <span>Cargando proyectos...</span>
+  </div>
 
-  <!-- List -->
-  <div *ngIf="!loading" class="item-list">
+  <!-- Lista -->
+  <div *ngIf="!loading && projects.length > 0" class="item-list">
     <div *ngFor="let p of projects" class="item-row">
-      <div class="item-color-dot" [style.background]="p.color || '#1B4B8A'"></div>
+
+      <div class="item-color-bar" [style.background]="p.color || '#1B4B8A'"></div>
+
+      <!-- Thumbnail si tiene imágenes -->
+      <div class="item-thumb" *ngIf="p.images?.length">
+        <img [src]="apiBase + p.images[0]" alt="{{ p.name }}">
+      </div>
+      <div class="item-thumb item-thumb--empty" *ngIf="!p.images?.length">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </div>
 
       <div class="item-info">
-        <div class="item-name">{{ p.name }}</div>
+        <div class="item-name">
+          {{ p.name }}
+          <span class="badge badge--orange" *ngIf="p.featured">★ Destacado</span>
+        </div>
         <div class="item-meta">
           <span>{{ p.category }}</span>
           <span class="badge badge--green">{{ p.status }}</span>
-          <span *ngIf="!p.visible" class="badge" style="background:#FED7D7;color:#C53030;">Oculto</span>
+          <span class="badge badge--gray" *ngIf="!p.visible">Oculto</span>
+          <span *ngIf="p.images?.length" style="color:#94A3B8">
+            📷 {{ p.images.length }} foto{{ p.images.length !== 1 ? 's' : '' }}
+          </span>
         </div>
-      </div>
-
-      <div class="item-tags">
-        <span *ngFor="let t of p.stack.slice(0,3)" class="tag">{{ t }}</span>
       </div>
 
       <div class="item-actions">
         <button (click)="openEdit(p)" class="icon-btn icon-btn--edit" title="Editar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-          </svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
         <button (click)="delete(p.id)" class="icon-btn icon-btn--delete" title="Eliminar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-          </svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
         </button>
       </div>
     </div>
-
-    <div *ngIf="projects.length === 0" class="empty-state">
-      No hay proyectos todavía. ¡Crea el primero!
-    </div>
   </div>
+
+  <!-- Empty -->
+  <div *ngIf="!loading && projects.length === 0" class="empty-state">
+    <span class="empty-icon">📁</span>
+    <p>No hay proyectos todavía. ¡Crea el primero!</p>
+  </div>
+
 </div>
 
-<!-- MODAL -->
+<!-- ══ MODAL ══ -->
 <div *ngIf="showModal" class="modal-backdrop" (click)="showModal=false">
   <div class="modal" (click)="$event.stopPropagation()">
+
     <div class="modal-header">
       <h3>{{ form.id ? 'Editar proyecto' : 'Nuevo proyecto' }}</h3>
-      <button (click)="showModal=false" class="close-btn">✕</button>
+      <button (click)="showModal=false" class="close-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
+
     <div class="modal-body">
-      <div class="form-group">
-        <label>Nombre del proyecto</label>
-        <input type="text" [(ngModel)]="form.name" placeholder="Ej: EDO Gestión Mantenimiento" />
-      </div>
-      <div class="form-row">
+
+      <!-- Info básica -->
+      <div class="form-section">
+        <div class="form-section-label">Información general</div>
         <div class="form-group">
-          <label>Categoría</label>
-          <input type="text" [(ngModel)]="form.category" placeholder="Ej: Sistema de Gestión" />
+          <label>Nombre del proyecto *</label>
+          <input type="text" [(ngModel)]="form.name" placeholder="Ej: EDO Gestión Mantenimiento">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Categoría</label>
+            <input type="text" [(ngModel)]="form.category" placeholder="Ej: Sistema de Gestión">
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select [(ngModel)]="form.status">
+              <option *ngFor="let s of statusOptions">{{ s }}</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
-          <label>Estado</label>
-          <select [(ngModel)]="form.status">
-            <option *ngFor="let s of statusOptions">{{ s }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Stack (separado por comas)</label>
-        <input type="text" [(ngModel)]="form.stackStr" placeholder="Angular, Flask, PostgreSQL" />
-      </div>
-      <div class="form-group">
-        <label>Descripción</label>
-        <textarea rows="3" [(ngModel)]="form.description" placeholder="Descripción breve..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Highlights (uno por línea)</label>
-        <textarea rows="4" [(ngModel)]="form.highlightsStr" placeholder="Ciclo completo de órdenes&#10;Dashboard en tiempo real"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Color de acento</label>
-          <input type="color" [(ngModel)]="form.color" style="height:42px;cursor:pointer;" />
+          <label>Descripción</label>
+          <textarea rows="3" [(ngModel)]="form.description" placeholder="Descripción breve del proyecto..."></textarea>
         </div>
         <div class="form-group">
-          <label>Orden</label>
-          <input type="number" [(ngModel)]="form.order" placeholder="1" />
+          <label>Funcionalidades clave (una por línea)</label>
+          <textarea rows="4" [(ngModel)]="form.highlightsStr" placeholder="Ciclo completo de órdenes&#10;Dashboard en tiempo real&#10;Reportes PDF automáticos"></textarea>
         </div>
       </div>
-      <div class="form-checks">
-        <label class="check-label">
-          <input type="checkbox" [(ngModel)]="form.featured" />
-          Proyecto destacado
-        </label>
-        <label class="check-label">
-          <input type="checkbox" [(ngModel)]="form.visible" />
-          Visible en el sitio
-        </label>
+
+      <!-- Imágenes -->
+      <div class="form-section">
+        <div class="form-section-label">Screenshots del proyecto</div>
+
+        <!-- Previews existentes -->
+        <div class="img-grid" *ngIf="form.images?.length || pendingImages.length">
+          <div *ngFor="let img of form.images; let i = index" class="img-thumb">
+            <img [src]="img.startsWith('data:') ? img : apiBase + img" alt="img {{ i+1 }}">
+            <button class="img-remove" (click)="removeImage(i)" type="button">✕</button>
+            <div class="img-label">{{ i === 0 ? 'Portada' : 'Extra ' + i }}</div>
+          </div>
+        </div>
+
+        <!-- Botón agregar -->
+        <div class="upload-zone" (click)="fileInput.click()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>Clic para agregar imágenes</span>
+          <span class="upload-hint">JPG, PNG, WEBP · máx 5MB c/u</span>
+        </div>
+        <input #fileInput type="file" accept="image/*" multiple style="display:none" (change)="onImagesSelected($event)">
       </div>
+
+      <!-- Opciones -->
+      <div class="form-section">
+        <div class="form-section-label">Opciones</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Color de acento</label>
+            <div class="color-pick-row">
+              <input type="color" [(ngModel)]="form.color" class="color-input">
+              <span class="color-hex">{{ form.color }}</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Orden de aparición</label>
+            <input type="number" [(ngModel)]="form.order" placeholder="1">
+          </div>
+        </div>
+        <div class="form-checks">
+          <label class="check-label">
+            <input type="checkbox" [(ngModel)]="form.featured"> Proyecto destacado
+          </label>
+          <label class="check-label">
+            <input type="checkbox" [(ngModel)]="form.visible"> Visible en el sitio
+          </label>
+        </div>
+      </div>
+
     </div>
+
     <div class="modal-footer">
       <button (click)="showModal=false" class="btn btn--outline">Cancelar</button>
       <button (click)="save()" class="btn btn--blue" [disabled]="saving">
+        <svg *ngIf="saving" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 0.8s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
         {{ saving ? 'Guardando...' : 'Guardar proyecto' }}
       </button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- Toast -->
 <div *ngIf="toast" class="toast" [class.toast--success]="toastType==='success'" [class.toast--danger]="toastType==='danger'">
-  {{ toastType === 'success' ? '✅' : '🗑️' }} {{ toast }}
+  {{ toast }}
 </div>

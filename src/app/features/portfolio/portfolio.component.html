@@ -1,0 +1,246 @@
+<!-- ══ HERO DIVIDIDO ══ -->
+<section class="portfolio-hero">
+  <div class="hero-bg-dots"></div>
+
+  <div class="hero-split">
+
+    <!-- Izquierda: texto + watermark -->
+    <div class="hero-left">
+      <div class="hero-watermark">
+        <img src="assets/logo.webp" alt="">
+      </div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="dot-live"></span> Casos de éxito
+        </div>
+        <h1>Proyectos que<br><span class="accent">transforman<br>empresas</span></h1>
+        <p>Sistemas reales, en producción, resolviendo problemas reales en empresas colombianas.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-num">{{ projects.length }}+</div>
+            <div class="stat-label">Proyectos</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">En producción</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">60d</div>
+            <div class="stat-label">Tiempo promedio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Derecha: carrusel de screenshots -->
+    <div class="hero-carousel" *ngIf="carouselImages.length > 0">
+      <div class="carousel-track" [style.transform]="'translateX(-' + (carouselIndex * 100) + '%)'">
+        <div *ngFor="let img of carouselImages" class="carousel-slide">
+          <img [src]="apiBase + img" alt="Screenshot proyecto" loading="lazy">
+        </div>
+      </div>
+      <div class="carousel-dots" *ngIf="carouselImages.length > 1">
+        <span *ngFor="let img of carouselImages; let i = index"
+              class="cdot" [class.active]="carouselIndex === i"
+              (click)="carouselIndex = i"></span>
+      </div>
+      <div class="carousel-overlay"></div>
+    </div>
+
+    <!-- Placeholder si no hay imágenes aún -->
+    <div class="hero-carousel hero-placeholder" *ngIf="carouselImages.length === 0 && !loading">
+      <div class="placeholder-inner">
+        <div class="placeholder-icon">🖼️</div>
+        <p>Agrega screenshots desde el panel admin</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PROYECTOS ══ -->
+<section class="section bg-off-white">
+  <div class="container">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="state-center">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error && !loading" class="state-center">
+      <span style="font-size:36px">⚠️</span>
+      <p style="color:#64748B">No se pudieron cargar los proyectos.</p>
+      <button class="btn-retry" (click)="load()">Reintentar</button>
+    </div>
+
+    <ng-container *ngIf="!loading && !error">
+
+      <!-- Tabs de categoría -->
+      <div class="tabs" *ngIf="categories.length > 1">
+        <button *ngFor="let c of categories"
+                class="tab" [class.active]="activeCategory === c"
+                (click)="setCategory(c)">
+          {{ c }}
+          <span class="tab-count">{{ countFor(c) }}</span>
+        </button>
+      </div>
+
+      <!-- Sin proyectos -->
+      <div *ngIf="filtered.length === 0" class="state-center">
+        <p style="color:#94A3B8">No hay proyectos en esta categoría.</p>
+      </div>
+
+      <!-- Grid premium -->
+      <div class="projects-grid" *ngIf="filtered.length > 0">
+        <div *ngFor="let p of filtered; let i = index"
+             class="pcard"
+             [class.pcard--featured]="p.featured"
+             [style.--accent]="p.color"
+             (click)="openModal(p)">
+
+          <!-- Imagen o color gradient -->
+          <div class="pcard-visual">
+            <img *ngIf="p.images?.length" [src]="apiBase + p.images[0]" alt="{{ p.name }}" loading="lazy">
+            <div *ngIf="!p.images?.length" class="pcard-visual-fallback"
+                 [style.background]="'linear-gradient(135deg,' + p.color + '22 0%,' + p.color + '44 100%)'">
+              <span class="pcard-icon">{{ getCategoryIcon(p.category) }}</span>
+            </div>
+            <div class="pcard-overlay"></div>
+            <div class="pcard-badge-status" [class.status-prod]="p.status === 'En producción'">
+              <span class="sdot"></span>{{ p.status }}
+            </div>
+            <div class="pcard-badge-featured" *ngIf="p.featured">⭐ Destacado</div>
+          </div>
+
+          <!-- Contenido -->
+          <div class="pcard-body">
+            <div class="pcard-category">{{ p.category }}</div>
+            <h3 class="pcard-name">{{ p.name }}</h3>
+            <p class="pcard-desc">{{ p.description | slice:0:110 }}{{ p.description?.length > 110 ? '...' : '' }}</p>
+
+            <ul class="pcard-highlights" *ngIf="p.highlights?.length">
+              <li *ngFor="let h of p.highlights.slice(0,2)">
+                <span class="hcheck">✓</span>{{ h }}
+              </li>
+            </ul>
+
+            <div class="pcard-cta">
+              Ver proyecto <span class="arrow">→</span>
+            </div>
+          </div>
+
+          <!-- Línea de color -->
+          <div class="pcard-line" [style.background]="p.color"></div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="container text-center">
+    <h2 class="cta-title">¿Su empresa puede ser<br>el próximo caso de éxito?</h2>
+    <p class="cta-desc">Cuéntenos su reto. Le respondemos en menos de 24 horas.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/573205554295?text=Hola%2C%20vi%20sus%20proyectos%20y%20quiero%20desarrollar%20algo%20para%20mi%20empresa" target="_blank" class="btn-wa">
+        💬 Hablar con un asesor
+      </a>
+      <a routerLink="/servicios" class="btn-ghost">Ver servicios</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img src="assets/logo.webp" alt="EDO" class="footer-logo">
+        <div>
+          <div class="footer-brand-name">EDO Ingeniería Digital</div>
+          <div class="footer-brand-sub">Montería, Córdoba · Colombia</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Quick links</div>
+      <nav class="footer-nav">
+        <a routerLink="/">Inicio</a>
+        <a routerLink="/servicios">Servicios</a>
+        <a routerLink="/portafolio">Proyectos</a>
+        <a routerLink="/blog">Blog</a>
+      </nav>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Información</div>
+      <nav class="footer-nav">
+        <a routerLink="/contacto">Contáctanos</a>
+        <a routerLink="/portafolio">Casos de Éxito</a>
+      </nav>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Contacto</div>
+      <div class="footer-contact">
+        <div class="footer-contact-item">📍 Montería, Córdoba</div>
+        <div class="footer-contact-item">✉️ contacto&#64;edoingenieriadigital.com</div>
+        <div class="footer-contact-item">📱 +57 320 555 4295</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container"><span>© 2026 EDO Ingeniería Digital</span></div>
+  </div>
+</footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-backdrop" *ngIf="selected" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal()">✕</button>
+
+    <!-- Galería de imágenes en el modal -->
+    <div class="modal-gallery" *ngIf="selected.images?.length">
+      <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
+        <img *ngFor="let img of selected.images" [src]="apiBase + img" alt="{{ selected.name }}">
+      </div>
+      <div class="mgallery-nav" *ngIf="selected.images.length > 1">
+        <button (click)="prevModalImg()">‹</button>
+        <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
+        <button (click)="nextModalImg()">›</button>
+      </div>
+      <div class="modal-bar-top" [style.background]="selected.color"></div>
+    </div>
+    <div class="modal-bar-top" *ngIf="!selected.images?.length" [style.background]="selected.color"></div>
+
+    <div class="modal-body">
+      <div class="modal-meta">
+        <span class="pcard-category">{{ selected.category }}</span>
+        <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
+          <span class="sdot"></span>{{ selected.status }}
+        </span>
+      </div>
+      <h2 class="modal-title">{{ selected.name }}</h2>
+      <p class="modal-desc">{{ selected.description }}</p>
+
+      <div class="modal-highlights" *ngIf="selected.highlights?.length">
+        <h4>Funcionalidades clave</h4>
+        <ul>
+          <li *ngFor="let h of selected.highlights">
+            <span class="hcheck">✓</span>{{ h }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <a [href]="waProject(selected)" target="_blank" class="btn-wa">
+          <svg viewBox="0 0 32 32" width="16" height="16" fill="currentColor">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/>
+          </svg>
+          Quiero algo similar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

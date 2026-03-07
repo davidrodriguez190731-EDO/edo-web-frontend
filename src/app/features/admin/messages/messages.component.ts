@@ -6,58 +6,24 @@ import { ApiService } from '../../../core/services/api.service';
   selector: 'app-messages',
   standalone: true,
   imports: [CommonModule],
-  template: `
-<div class="admin-page">
-  <div class="page-header">
-    <div>
-      <h1>Mensajes de contacto</h1>
-      <p>{{ messages.length }} mensajes recibidos</p>
-    </div>
-  </div>
-
-  <div *ngIf="loading" class="loading-state">Cargando mensajes...</div>
-
-  <div *ngIf="!loading" style="display:flex;flex-direction:column;gap:14px;">
-    <div *ngFor="let m of messages" class="msg-card" [class.msg-unread]="!m.read" (click)="markRead(m)">
-      <div class="msg-header">
-        <div>
-          <span class="msg-name">{{ m.name }}</span>
-          <span class="msg-company" *ngIf="m.company"> · {{ m.company }}</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <span class="msg-date">{{ m.date }}</span>
-          <span *ngIf="!m.read" class="unread-dot"></span>
-        </div>
-      </div>
-      <div class="msg-email">📧 {{ m.email }}</div>
-      <div *ngIf="m.projectType" class="msg-type">🏷️ {{ m.projectType }}</div>
-      <div class="msg-body">{{ m.message }}</div>
-    </div>
-    <div *ngIf="messages.length === 0" class="empty-state">No hay mensajes todavía.</div>
-  </div>
-</div>
-  `,
-  styles: [`
-    .msg-card {
-      background: #fff; border: 1px solid #E2E8F0; border-radius: 14px;
-      padding: 20px 24px; cursor: pointer; transition: all 0.2s;
-      &:hover { box-shadow: 0 4px 16px rgba(27,75,138,0.1); }
-      &.msg-unread { border-left: 3px solid #1B4B8A; background: #F7FBFF; }
-    }
-    .msg-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-    .msg-name { font-size:15px; font-weight:700; color:#0F2E5A; }
-    .msg-company { font-size:14px; color:#718096; }
-    .msg-date { font-size:12px; color:#A0AEC0; }
-    .msg-email { font-size:13px; color:#718096; margin-bottom:4px; }
-    .msg-type { font-size:13px; color:#1B4B8A; font-weight:600; margin-bottom:8px; }
-    .msg-body { font-size:14px; color:#4A5568; line-height:1.6; }
-    .unread-dot { width:8px; height:8px; background:#1B4B8A; border-radius:50%; flex-shrink:0; }
-  `],
+  templateUrl: './messages.component.html',
+  styleUrls: ['./messages.component.scss'],
 })
 export class MessagesComponent implements OnInit {
   private api = inject(ApiService);
+
   messages: any[] = [];
-  loading = true;
+  loading   = true;
+  selected: any = null;
+  filter = 'todos';  // todos | no_leidos
+
+  get filtered() {
+    return this.filter === 'no_leidos'
+      ? this.messages.filter(m => !m.read)
+      : this.messages;
+  }
+
+  get unreadCount() { return this.messages.filter(m => !m.read).length; }
 
   ngOnInit() {
     this.api.getMessages().subscribe({
@@ -66,8 +32,29 @@ export class MessagesComponent implements OnInit {
     });
   }
 
-  markRead(m: any) {
-    if (m.read) return;
-    this.api.markRead(m.id).subscribe({ next: () => m.read = true });
+  open(m: any) {
+    this.selected = m;
+    if (!m.read) this.api.markRead(m.id).subscribe({ next: () => m.read = true });
+  }
+
+  close() { this.selected = null; }
+
+  waReply(m: any) {
+    if (!m.phone && !m.email) return null;
+    const msg = `Hola ${m.name}, recibimos su mensaje sobre "${m.projectType || 'su proyecto'}" y queremos conversar con usted.`;
+    return m.phone
+      ? `https://wa.me/57${m.phone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`
+      : null;
+  }
+
+  mailReply(m: any) {
+    const sub = encodeURIComponent(`Re: ${m.projectType || 'Consulta'} - EDO Ingeniería Digital`);
+    const body = encodeURIComponent(`Hola ${m.name},\n\nGracias por contactarnos.\n\n`);
+    return `mailto:${m.email}?subject=${sub}&body=${body}`;
+  }
+
+  formatDate(d: string) {
+    if (!d) return '';
+    return new Date(d).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 }

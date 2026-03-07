@@ -1,7 +1,12 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, inject,
+  ElementRef, ViewChild, HostListener
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../core/services/api.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -11,85 +16,106 @@ import { ApiService } from '../../core/services/api.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  private api = inject(ApiService);
+  private api     = inject(ApiService);
+  private http    = inject(HttpClient);
+  private baseUrl = environment.apiUrl.replace('/api', '');
 
   projects: any[] = [];
-  blogs: any[]    = [];
+  blogs:    any[] = [];
 
-  // Counter de horas perdidas
-  secondsOnPage = 0;
-  private timer: any;
-  // ~444 horas por segundo perdidas en Colombia (base: 12M PyMEs × 3.2h/día ÷ 86400)
-  get hoursLost(): string {
-    return (this.secondsOnPage * 444).toLocaleString('es-CO');
-  }
+  // Imágenes hero desde BD
+  chaosImage: string | null = null;
+  orderImage: string | null = null;
 
-  // Chaos vs Order toggle
-  showChaos = true;
-  private toggleTimer: any;
+  // Slider before/after
+  sliderPos    = 50;   // porcentaje 0–100
+  isDragging   = false;
+  autoTimer:   any;
 
-  // Stats
-  stats = [
-    { val: '68%',  label: 'de PyMEs usa Excel para gestión operativa',         icon: '📊' },
-    { val: '3.2h', label: 'perdidas por empleado al día en tareas manuales',   icon: '⏰' },
-    { val: '12×',  label: 'más rápido con un sistema vs proceso manual',       icon: '⚡' },
-    { val: '60d',  label: 'promedio para tener su sistema en producción',      icon: '🚀' },
-  ];
-
-  chaosItems = [
-    { app: 'WhatsApp',  emoji: '📱', msg: 'Oye, ¿ya hiciste el mantenimiento del #5?', time: '9:14', color: '#25D366' },
-    { app: 'Excel',     emoji: '📊', msg: 'MANTENIMIENTO_FINAL_v3_BUENO_ESTE.xlsx',     time: '9:31', color: '#217346' },
-    { app: 'Email',     emoji: '📧', msg: 'Reporte de la semana (ver adjunto)',         time: '10:02', color: '#0072C6' },
-    { app: 'Papel',     emoji: '📝', msg: 'Orden de trabajo #234 (archivada)',          time: '—',     color: '#E2A800' },
-  ];
-
-  orderStats = [
-    { n: '18',  label: 'Órdenes activas' },
-    { n: '94%', label: 'Cumplimiento' },
-    { n: '3',   label: 'Pendientes' },
-  ];
-
-  orderItems = [
-    { icon: '✅', text: 'OT #234 cerrada — Técnico: Martínez', sub: 'Tiempo: 2.5h · Conforme 100%', color: '#68D391' },
-    { icon: '🔧', text: 'OT #235 asignada automáticamente',    sub: 'Sede Norte · Prioridad: Media', color: '#00C2FF' },
-    { icon: '📄', text: 'Informe semanal generado en PDF',     sub: 'Enviado a gerencia · 08:00 AM', color: '#B794F4' },
-  ];
-
-  problems = [
-    { icon: '📋', pain: 'Información en múltiples archivos Excel sin versión única de verdad',    cost: 'Decisiones equivocadas por datos desactualizados' },
-    { icon: '📱', pain: 'Coordinación operativa por WhatsApp sin trazabilidad',                  cost: 'Tareas perdidas, responsables indefinidos' },
-    { icon: '🖨️', pain: 'Reportes que alguien arma manualmente cada semana',                     cost: '4-8 horas perdidas por empleado en reportes' },
-    { icon: '🗂️', pain: 'Órdenes de trabajo en papel o email sin seguimiento',                   cost: 'Trabajos duplicados o que nadie recuerda' },
-    { icon: '🔍', pain: 'No puede saber en tiempo real qué está pasando en campo',               cost: 'Sorpresas en auditorías y entregas' },
-    { icon: '📊', pain: 'Consolidar datos de múltiples sedes tarda días',                        cost: 'Gerencia toma decisiones a ciegas' },
-  ];
+  @ViewChild('sliderWrapper') sliderWrapper!: ElementRef<HTMLDivElement>;
 
   services = [
-    { icon: '🖥️', name: 'Apps Web a la Medida',             desc: 'Sistemas completos con Angular + Flask + PostgreSQL. Mantenimiento, facturación, RRHH, inventarios.' },
-    { icon: '🛒', name: 'E-commerce B2B',                    desc: 'Plataformas para distribuidoras con catálogo, pedidos, aprobación de clientes y fidelización.' },
-    { icon: '⚡', name: 'Automatización Google Workspace',   desc: 'GAS para facturas DIAN, reportes, conciliaciones y flujos de aprobación automáticos.' },
-    { icon: '📱', name: 'Apps Móviles (PWA)',                 desc: 'Inspecciones en campo con foto y voz. Sin internet. Sin app store.' },
-    { icon: '📊', name: 'Dashboards e Inteligencia',         desc: 'KPIs en tiempo real, rankings y reportes PDF automáticos a gerencia.' },
-    { icon: '☁️', name: 'Despliegue y Soporte',              desc: 'Railway Cloud, dominio propio, SSL, backups y soporte continuo.' },
+    { icon: '🖥️', name: 'Sistemas a la Medida',           desc: 'Software completo para su operación: mantenimiento, facturación, RRHH, inventarios. Angular + Flask + PostgreSQL.' },
+    { icon: '🌐', name: 'Páginas Web Profesionales',       desc: 'Sitios rápidos, responsivos y optimizados. Mejore su presencia online, atraiga clientes y venda más.' },
+    { icon: '⚡', name: 'Soluciones Digitales',            desc: 'Automatización de procesos, integraciones, dashboards y consultoría para transformar su empresa.' },
   ];
 
   process = [
-    { n: '01', title: 'Diagnóstico',  desc: 'Entendemos su operación antes de escribir código.' },
-    { n: '02', title: 'Propuesta',    desc: 'Alcance, cronograma y costo. Sin sorpresas.' },
-    { n: '03', title: 'Desarrollo',   desc: 'Entregas quincenales. Usted aprueba en tiempo real.' },
-    { n: '04', title: 'Lanzamiento',  desc: 'Producción, capacitación y soporte incluido.' },
+    { n: '01', title: 'Diagnóstico', desc: 'Entendemos su operación antes de escribir código.' },
+    { n: '02', title: 'Propuesta',   desc: 'Alcance, cronograma y costo. Sin sorpresas.' },
+    { n: '03', title: 'Desarrollo',  desc: 'Entregas quincenales. Usted aprueba en tiempo real.' },
+    { n: '04', title: 'Lanzamiento', desc: 'Producción, capacitación y soporte incluido.' },
   ];
 
   ngOnInit() {
-    this.timer       = setInterval(() => this.secondsOnPage++, 1000);
-    this.toggleTimer = setInterval(() => this.showChaos = !this.showChaos, 3500);
-
-    this.api.getProjects().subscribe({ next: r => this.projects = r.slice(0, 2) });
+    this.loadSiteConfig();
+    this.api.getProjects().subscribe({ next: r => this.projects = r.slice(0, 3) });
     this.api.getPosts().subscribe({ next: r => this.blogs = r.slice(0, 3) });
+    this.startAutoSlide();
+  }
+
+  loadSiteConfig() {
+    this.http.get<any>(`${environment.apiUrl}/site-config/`).subscribe({
+      next: cfg => {
+        if (cfg.hero_chaos_image) this.chaosImage = this.baseUrl + cfg.hero_chaos_image;
+        if (cfg.hero_order_image) this.orderImage = this.baseUrl + cfg.hero_order_image;
+      }
+    });
+  }
+
+  // ── Auto-slide suave de izquierda a derecha ──────────────────
+  private startAutoSlide() {
+    let direction = 1;
+    this.autoTimer = setInterval(() => {
+      if (this.isDragging) return;
+      this.sliderPos += direction * 0.15;
+      if (this.sliderPos >= 98) direction = -1;
+      if (this.sliderPos <= 2)  direction = 1;
+    }, 16);
+  }
+
+  // ── Drag mouse ───────────────────────────────────────────────
+  startDrag(event: MouseEvent) {
+    this.isDragging = true;
+    this.updateSlider(event.clientX);
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (!this.isDragging) return;
+    this.updateSlider(event.clientX);
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    this.isDragging = false;
+  }
+
+  // ── Drag touch ───────────────────────────────────────────────
+  startDragTouch(event: TouchEvent) {
+    this.isDragging = true;
+    this.updateSlider(event.touches[0].clientX);
+  }
+
+  @HostListener('document:touchmove', ['$event'])
+  onTouchMove(event: TouchEvent) {
+    if (!this.isDragging) return;
+    this.updateSlider(event.touches[0].clientX);
+  }
+
+  @HostListener('document:touchend')
+  onTouchEnd() {
+    this.isDragging = false;
+  }
+
+  private updateSlider(clientX: number) {
+    if (!this.sliderWrapper) return;
+    const rect  = this.sliderWrapper.nativeElement.getBoundingClientRect();
+    const pos   = ((clientX - rect.left) / rect.width) * 100;
+    this.sliderPos = Math.min(100, Math.max(0, pos));
   }
 
   ngOnDestroy() {
-    clearInterval(this.timer);
-    clearInterval(this.toggleTimer);
+    clearInterval(this.autoTimer);
   }
 }

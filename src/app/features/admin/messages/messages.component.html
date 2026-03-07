@@ -1,0 +1,111 @@
+<div class="admin-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Mensajes de contacto</h1>
+      <p>{{ messages.length }} mensaje{{ messages.length !== 1 ? 's' : '' }} recibido{{ messages.length !== 1 ? 's' : '' }}
+        <span class="unread-badge" *ngIf="unreadCount > 0">{{ unreadCount }} sin leer</span>
+      </p>
+    </div>
+    <!-- Filtro rápido -->
+    <div class="filter-tabs">
+      <button class="filter-tab" [class.active]="filter==='todos'" (click)="filter='todos'">Todos</button>
+      <button class="filter-tab" [class.active]="filter==='no_leidos'" (click)="filter='no_leidos'">
+        Sin leer <span *ngIf="unreadCount > 0" class="ftab-count">{{ unreadCount }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <span>Cargando mensajes...</span>
+  </div>
+
+  <!-- Lista -->
+  <div *ngIf="!loading && filtered.length > 0" class="msg-list">
+    <div *ngFor="let m of filtered" class="msg-row" [class.msg-row--unread]="!m.read" (click)="open(m)">
+
+      <!-- Avatar -->
+      <div class="msg-avatar" [class.msg-avatar--unread]="!m.read">
+        {{ m.name?.charAt(0)?.toUpperCase() || '?' }}
+      </div>
+
+      <div class="msg-info">
+        <div class="msg-top">
+          <span class="msg-name">{{ m.name }}</span>
+          <span class="msg-company" *ngIf="m.company"> · {{ m.company }}</span>
+          <span class="msg-date">{{ formatDate(m.date || m.created_at) }}</span>
+        </div>
+        <div class="msg-subject" *ngIf="m.projectType">{{ m.projectType }}</div>
+        <div class="msg-preview">{{ m.message | slice:0:100 }}{{ m.message?.length > 100 ? '...' : '' }}</div>
+      </div>
+
+      <div class="msg-dot" *ngIf="!m.read"></div>
+    </div>
+  </div>
+
+  <!-- Empty -->
+  <div *ngIf="!loading && filtered.length === 0" class="empty-state">
+    <span class="empty-icon">📭</span>
+    <p>{{ filter === 'no_leidos' ? 'No hay mensajes sin leer.' : 'Aún no hay mensajes.' }}</p>
+  </div>
+
+</div>
+
+<!-- ══ MODAL DETALLE ══ -->
+<div *ngIf="selected" class="modal-backdrop" (click)="close()">
+  <div class="modal msg-modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="msg-modal-meta">
+        <div class="msg-avatar msg-avatar--lg">{{ selected.name?.charAt(0)?.toUpperCase() }}</div>
+        <div>
+          <div class="msg-modal-name">{{ selected.name }}
+            <span *ngIf="selected.company" class="msg-modal-company"> · {{ selected.company }}</span>
+          </div>
+          <div class="msg-modal-date">{{ formatDate(selected.date || selected.created_at) }}</div>
+        </div>
+      </div>
+      <button (click)="close()" class="close-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Datos de contacto -->
+      <div class="contact-chips">
+        <a [href]="'mailto:' + selected.email" class="contact-chip">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          {{ selected.email }}
+        </a>
+        <div class="contact-chip" *ngIf="selected.phone">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 012 1.18 2 2 0 013.18-.02h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.91 7.91a16 16 0 006.16 6.16l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+          {{ selected.phone }}
+        </div>
+        <div class="contact-chip contact-chip--type" *ngIf="selected.projectType">
+          {{ selected.projectType }}
+        </div>
+      </div>
+
+      <!-- Mensaje -->
+      <div class="msg-full-body">{{ selected.message }}</div>
+
+    </div>
+
+    <!-- Acciones de respuesta -->
+    <div class="modal-footer msg-actions">
+      <button (click)="close()" class="btn btn--outline">Cerrar</button>
+      <a [href]="mailReply(selected)" class="btn btn--outline btn--mail">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Responder por email
+      </a>
+      <a *ngIf="waReply(selected)" [href]="waReply(selected)" target="_blank" class="btn btn--wa">
+        <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/></svg>
+        Responder por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>

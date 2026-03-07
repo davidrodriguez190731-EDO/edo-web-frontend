@@ -1,0 +1,162 @@
+<div class="admin-layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/logo.webp" alt="EDO" class="sidebar-logo">
+      <div>
+        <div class="brand-name">EDO Ingeniería Digital</div>
+        <div class="brand-sub">Panel Administrativo</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section-label">Páginas del sitio</div>
+    <nav class="sidebar-nav">
+      <ng-container *ngFor="let page of pages">
+
+        <!-- Botón de página -->
+        <button class="nav-page"
+                [class.active]="activePage === page.id"
+                (click)="selectPage(page.id)">
+          <span class="nav-page-icon">{{ page.icon }}</span>
+          <span class="nav-page-label">{{ page.label }}</span>
+          <span class="nav-page-arrow" [class.open]="activePage === page.id">›</span>
+        </button>
+
+        <!-- Subsecciones: se despliegan cuando la página está activa -->
+        <div class="nav-sections" [class.open]="activePage === page.id && !isAdminRoute()">
+          <button *ngFor="let section of page.sections"
+                  class="nav-section"
+                  [class.active]="activeSection === section.id"
+                  (click)="selectSection(section.id); $event.stopPropagation()">
+            <span class="nav-section-icon">{{ section.icon }}</span>
+            <span class="nav-section-label">{{ section.label }}</span>
+            <span class="nav-section-dirty" *ngIf="isDirty(section)"></span>
+          </button>
+        </div>
+
+      </ng-container>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="sidebar-action">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        Ver sitio público
+      </a>
+      <button (click)="logout()" class="sidebar-action logout-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="admin-main">
+
+    <ng-container *ngIf="!isAdminRoute() && currentSection">
+
+      <!-- Header -->
+      <div class="page-editor-header">
+        <div class="peh-left">
+          <span class="peh-icon">{{ currentSection.icon }}</span>
+          <div>
+            <h1 class="peh-title">{{ currentSection.label }}</h1>
+            <p class="peh-sub">
+              {{ currentPage?.label }}
+              <a *ngIf="currentPage?.route" [href]="currentPage?.route" target="_blank" class="peh-link">Ver página →</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-loading" *ngIf="loading">
+        <div class="spinner"></div> Cargando configuración...
+      </div>
+
+      <ng-container *ngIf="!loading">
+
+        <!-- Sección especial: imágenes hero -->
+        <ng-container *ngIf="currentSection.special === 'hero_images'">
+          <div class="section-card">
+            <div class="alert-success" *ngIf="imgSuccess">✅ {{ imgSuccess }}</div>
+            <div class="alert-error"   *ngIf="imgError">⚠️ {{ imgError }}</div>
+            <div class="img-grid">
+              <div class="img-card">
+                <div class="img-card-label">Imagen "Sin sistema" (Caos)</div>
+                <div class="img-preview" (click)="triggerUpload('chaos')" [class.has-img]="chaosPreview">
+                  <img *ngIf="chaosPreview" [src]="chaosPreview" alt="Caos">
+                  <div *ngIf="!chaosPreview" class="img-placeholder"><span>📷</span><span>Clic para subir</span></div>
+                </div>
+                <input #chaosInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event,'chaos')">
+                <button class="btn-img-save" (click)="saveImage('chaos')" [disabled]="!chaosPending || imgSaving">
+                  {{ imgSaving ? 'Guardando...' : '💾 Guardar imagen' }}
+                </button>
+              </div>
+              <div class="img-card">
+                <div class="img-card-label">Imagen "Con sistema" (Orden)</div>
+                <div class="img-preview" (click)="triggerUpload('order')" [class.has-img]="orderPreview">
+                  <img *ngIf="orderPreview" [src]="orderPreview" alt="Orden">
+                  <div *ngIf="!orderPreview" class="img-placeholder"><span>📷</span><span>Clic para subir</span></div>
+                </div>
+                <input #orderInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event,'order')">
+                <button class="btn-img-save" (click)="saveImage('order')" [disabled]="!orderPending || imgSaving">
+                  {{ imgSaving ? 'Guardando...' : '💾 Guardar imagen' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Campos normales -->
+        <ng-container *ngIf="!currentSection.special">
+          <div class="section-card">
+            <div class="section-fields">
+              <div *ngFor="let field of currentSection.fields" class="field-wrap">
+                <label class="field-label">{{ field.label }}</label>
+                <span class="field-key">{{ field.key }}</span>
+                <textarea *ngIf="field.type === 'textarea'"
+                          class="field-input"
+                          [(ngModel)]="draft[field.key]"
+                          rows="3"
+                          [placeholder]="field.label">
+                </textarea>
+                <input *ngIf="field.type !== 'textarea'"
+                       class="field-input"
+                       [type]="field.type || 'text'"
+                       [(ngModel)]="draft[field.key]"
+                       [placeholder]="field.label">
+                <div class="field-meta">
+                  <span class="field-hint"    *ngIf="field.hint">💡 {{ field.hint }}</span>
+                  <span class="field-chars"   *ngIf="field.type === 'textarea'">{{ charCount(field.key) }} chars</span>
+                  <span class="field-changed" *ngIf="draft[field.key] !== config[field.key]">● Modificado</span>
+                </div>
+              </div>
+              <div class="section-error" *ngIf="currentSection.error">⚠️ {{ currentSection.error }}</div>
+            </div>
+            <div class="section-footer">
+              <button class="btn-discard" (click)="discardSection(currentSection)" [disabled]="!isDirty(currentSection) || currentSection.saving">
+                Descartar
+              </button>
+              <button class="btn-save" (click)="saveSection(currentSection)" [disabled]="!isDirty(currentSection) || currentSection.saving">
+                <span *ngIf="!currentSection.saving && !currentSection.saved">💾 Guardar sección</span>
+                <span *ngIf="currentSection.saving">Guardando...</span>
+                <span *ngIf="currentSection.saved">✅ Guardado</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+
+    </ng-container>
+
+    <!-- Módulos hijos -->
+    <router-outlet></router-outlet>
+
+  </main>
+</div>

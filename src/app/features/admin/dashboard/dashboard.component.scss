@@ -1,0 +1,238 @@
+// ══ LAYOUT ══════════════════════════════════════════════════════
+.admin-layout {
+  display: flex; min-height: 100vh;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+// ══ SIDEBAR ═════════════════════════════════════════════════════
+.admin-sidebar {
+  width: 260px; min-height: 100vh;
+  background: #0A1628;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  overflow-y: auto; z-index: 100;
+}
+
+.sidebar-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-logo    { height: 38px; width: auto; }
+.brand-name      { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.2; }
+.brand-sub       { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 2px; }
+
+.sidebar-section-label {
+  padding: 14px 16px 5px;
+  font-size: 9px; font-weight: 900; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.2);
+  &.mt { margin-top: 8px; }
+}
+
+.sidebar-nav { padding: 4px 8px; }
+
+// ── Nivel 1: páginas ─────────────────────────────────────────────
+.nav-page {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 10px; border-radius: 8px; margin-bottom: 1px;
+  background: none; border: 1px solid transparent; cursor: pointer;
+  color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 600;
+  font-family: inherit; text-align: left; transition: all 0.18s;
+
+  &:hover {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.85);
+  }
+  &.active {
+    background: rgba(232,119,34,0.12);
+    color: #E87722;
+    border-color: rgba(232,119,34,0.25);
+  }
+}
+.nav-page-icon  { font-size: 15px; flex-shrink: 0; }
+.nav-page-label { flex: 1; }
+.nav-page-arrow {
+  font-size: 16px; color: rgba(255,255,255,0.2);
+  transition: transform 0.25s;
+  &.open { transform: rotate(90deg); color: #E87722; }
+}
+
+// ── Nivel 2: subsecciones ────────────────────────────────────────
+.nav-sections {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+  &.open { max-height: 800px; }
+  // Línea vertical que conecta las subsecciones
+  margin-left: 20px;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 4px;
+}
+
+.nav-section {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%;
+  padding: 6px 10px 6px 12px;
+  background: none; border: none; border-radius: 0 6px 6px 0;
+  color: rgba(255,255,255,0.35);
+  font-size: 11.5px; font-weight: 500;
+  font-family: inherit; cursor: pointer; text-align: left;
+  transition: all 0.15s; position: relative;
+
+  // Conector horizontal
+  &::before {
+    content: '';
+    position: absolute; left: 0; top: 50%;
+    width: 8px; height: 1px;
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-50%);
+  }
+
+  &:hover {
+    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.04);
+    &::before { background: rgba(232,119,34,0.4); }
+  }
+
+  &.active {
+    color: #E87722;
+    background: rgba(232,119,34,0.1);
+    font-weight: 600;
+    &::before { background: #E87722; width: 8px; }
+  }
+}
+
+.nav-section-icon  { font-size: 12px; opacity: 0.7; }
+.nav-section-label { flex: 1; line-height: 1.3; }
+.nav-section-dirty {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #E87722; flex-shrink: 0;
+}
+
+// ══ MAIN ════════════════════════════════════════════════════════
+.admin-main {
+  margin-left: 260px;
+  min-height: 100vh;
+  background: #F7F9FC;
+  flex: 1;
+}
+
+// ── Header de sección ──────────────────────────────────────────
+.page-editor-header {
+  padding: 24px 24px 0;
+  .peh-left { display: flex; align-items: flex-start; gap: 14px; }
+  .peh-icon  { font-size: 32px; line-height: 1; }
+  .peh-title { font-size: 20px; font-weight: 700; color: #0F2E5A; margin: 0; }
+  .peh-sub   { font-size: 13px; color: #94A3B8; margin: 4px 0 0; }
+  .peh-link  { color: #E87722; text-decoration: none; margin-left: 6px; font-weight: 500;
+               &:hover { text-decoration: underline; } }
+}
+
+// ── Card de sección ────────────────────────────────────────────
+.section-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  padding: 28px;
+  margin: 20px 24px;
+}
+
+// ── Campos ─────────────────────────────────────────────────────
+.section-fields { display: flex; flex-direction: column; gap: 20px; }
+
+.field-wrap { display: flex; flex-direction: column; gap: 4px; }
+
+.field-label {
+  font-size: 13px; font-weight: 600; color: #374151;
+}
+.field-key {
+  font-size: 10px; color: #CBD5E1; font-family: monospace;
+  margin-bottom: 2px;
+}
+.field-input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid #E2E8F0; border-radius: 8px;
+  font-size: 13px; font-family: inherit; color: #1E293B;
+  background: #F8FAFC; transition: border-color 0.2s;
+  resize: vertical; box-sizing: border-box;
+  &:focus { outline: none; border-color: #E87722; background: #fff; }
+}
+.field-meta {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  margin-top: 2px;
+}
+.field-hint    { font-size: 11px; color: #94A3B8; }
+.field-chars   { font-size: 11px; color: #94A3B8; margin-left: auto; }
+.field-changed { font-size: 11px; color: #E87722; font-weight: 600; }
+.section-error { font-size: 12px; color: #EF4444; margin-top: 8px; }
+
+// ── Footer guardar ─────────────────────────────────────────────
+.section-footer {
+  display: flex; justify-content: flex-end; gap: 10px;
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid #F1F5F9;
+}
+.btn-discard {
+  padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+  background: none; border: 1.5px solid #E2E8F0; color: #64748B; cursor: pointer;
+  transition: all 0.15s;
+  &:hover:not(:disabled) { border-color: #CBD5E1; color: #374151; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+.btn-save {
+  padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  background: #E87722; border: none; color: #fff; cursor: pointer;
+  transition: all 0.15s;
+  &:hover:not(:disabled) { background: #D4691A; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+// ── Loading ────────────────────────────────────────────────────
+.editor-loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 40px 24px; color: #94A3B8; font-size: 14px;
+}
+.spinner {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid #E2E8F0; border-top-color: #E87722;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Hero images ────────────────────────────────────────────────
+.img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.img-card { display: flex; flex-direction: column; gap: 10px; }
+.img-card-label { font-size: 12px; font-weight: 600; color: #374151; }
+.img-preview {
+  height: 160px; border-radius: 8px; border: 2px dashed #E2E8F0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden; background: #F8FAFC;
+  transition: border-color 0.2s;
+  &:hover { border-color: #E87722; }
+  &.has-img { border-style: solid; border-color: #E2E8F0; }
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+.img-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #94A3B8; font-size: 12px; span:first-child { font-size: 28px; } }
+.btn-img-save {
+  padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  background: #0F2E5A; color: #fff; border: none; cursor: pointer;
+  &:hover:not(:disabled) { background: #1B4B8A; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+.alert-success { padding: 10px 14px; border-radius: 8px; background: #F0FFF4; color: #276749; font-size: 13px; margin-bottom: 16px; }
+.alert-error   { padding: 10px 14px; border-radius: 8px; background: #FFF5F5; color: #C53030; font-size: 13px; margin-bottom: 16px; }
+
+// ── Sidebar footer ─────────────────────────────────────────────
+.sidebar-footer {
+  margin-top: auto; padding: 12px 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-action {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 8px 10px; border-radius: 8px; border: none; background: none;
+  color: rgba(255,255,255,0.3); font-size: 12px; font-family: inherit;
+  cursor: pointer; text-decoration: none; transition: all 0.15s;
+  &:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); }
+}
+.logout-btn:hover { color: #FC8181 !important; }

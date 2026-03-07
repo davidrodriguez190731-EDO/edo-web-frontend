@@ -1,0 +1,90 @@
+<div class="cms-wrap">
+
+  <!-- Header -->
+  <div class="cms-header">
+    <div>
+      <h1 class="cms-title">Contenido del Sitio</h1>
+      <p class="cms-subtitle">Edita todos los textos y datos visibles en el sitio web</p>
+    </div>
+    <div class="header-actions" *ngIf="!loading">
+      <button class="btn-discard" (click)="discard()" [disabled]="!isDirty() || saving">
+        Descartar cambios
+      </button>
+      <button class="btn-save" (click)="save()" [disabled]="!isDirty() || saving">
+        <span *ngIf="!saving && !saved">💾 Guardar sección</span>
+        <span *ngIf="saving">Guardando...</span>
+        <span *ngIf="saved">✅ Guardado</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="cms-error" *ngIf="error">⚠️ {{ error }}</div>
+
+  <!-- Loading -->
+  <div class="cms-loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <span>Cargando configuración...</span>
+  </div>
+
+  <ng-container *ngIf="!loading">
+
+    <!-- Tabs -->
+    <div class="cms-tabs">
+      <button *ngFor="let tab of tabs"
+              class="cms-tab"
+              [class.active]="activeTab === tab.id"
+              (click)="activeTab = tab.id">
+        <span class="tab-icon">{{ tab.icon }}</span>
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <!-- Dirty badge -->
+    <div class="dirty-banner" *ngIf="isDirty()">
+      <span>⚡ Tienes cambios sin guardar en esta sección</span>
+    </div>
+
+    <!-- Campos -->
+    <div class="cms-fields">
+      <div *ngFor="let field of currentFields" class="field-group">
+        <label class="field-label">{{ field.label }}</label>
+        <span class="field-key">{{ field.key }}</span>
+
+        <textarea *ngIf="field.type === 'textarea'"
+                  class="field-input field-textarea"
+                  [(ngModel)]="draft[field.key]"
+                  rows="3"
+                  [placeholder]="'Valor de ' + field.label">
+        </textarea>
+
+        <input *ngIf="field.type !== 'textarea'"
+               class="field-input"
+               [type]="field.type || 'text'"
+               [(ngModel)]="draft[field.key]"
+               [placeholder]="'Valor de ' + field.label">
+
+        <div class="field-footer">
+          <span class="field-hint" *ngIf="field.hint">💡 {{ field.hint }}</span>
+          <span class="field-chars" *ngIf="field.type === 'textarea'">
+            {{ charCount(field.key) }} caracteres
+          </span>
+          <span class="field-changed"
+                *ngIf="draft[field.key] !== config[field.key]">
+            ● Modificado
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer save -->
+    <div class="cms-footer-save" *ngIf="isDirty()">
+      <button class="btn-discard" (click)="discard()" [disabled]="saving">Descartar</button>
+      <button class="btn-save" (click)="save()" [disabled]="saving">
+        <span *ngIf="!saving">💾 Guardar cambios</span>
+        <span *ngIf="saving">Guardando...</span>
+      </button>
+    </div>
+
+  </ng-container>
+</div>

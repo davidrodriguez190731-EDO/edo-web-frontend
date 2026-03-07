@@ -1,0 +1,174 @@
+<!-- ══ HERO SPLIT ══ -->
+<section class="services-hero">
+  <div class="hero-bg-dots"></div>
+  <div class="particles">
+    <span *ngFor="let p of particles" class="particle"
+      [style.left.%]="p.x" [style.top.%]="p.y"
+      [style.width.px]="p.size" [style.height.px]="p.size"
+      [style.animation-delay.s]="p.delay"
+      [style.animation-duration.s]="p.duration">
+    </span>
+  </div>
+
+  <div class="hero-split">
+
+    <!-- Izquierda: texto + watermark -->
+    <div class="hero-left">
+      <div class="hero-watermark">
+        <img src="assets/logo.webp" alt="">
+      </div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="dot-live"></span>
+          Lo que construimos
+        </div>
+        <h1>Soluciones digitales<br><span class="accent">a la medida<br>de su empresa</span></h1>
+        <p>No vendemos plantillas ni software genérico. Cada sistema nace del diagnóstico
+          real de su operación y se entrega funcionando en producción.</p>
+      </div>
+    </div>
+
+    <!-- Derecha: carrusel de cards de servicios -->
+    <div class="hero-right">
+      <div class="hero-cards-track">
+        <div class="hero-cards-slider" [style.transform]="'translateX(-' + (heroCardIndex * 100) + '%)'">
+          <div *ngFor="let s of services; let i = index"
+               class="hero-scard"
+               [style.--accent]="s.color || '#E87722'"
+               (click)="toggle(i)">
+            <div class="hsc-num">{{ s.num }}</div>
+            <div class="hsc-icon">{{ s.icon }}</div>
+            <h3 class="hsc-title">{{ s.name }}</h3>
+            <p class="hsc-short">{{ s.short }}</p>
+            <div class="hsc-cta">Ver más →</div>
+            <div class="hsc-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dots navegación -->
+      <div class="hero-dots">
+        <span *ngFor="let s of services; let i = index"
+              class="hdot" [class.active]="heroCardIndex === i"
+              (click)="heroCardIndex = i"></span>
+      </div>
+
+      <!-- Flechas -->
+      <button class="hero-arrow hero-arrow--prev" (click)="prevHeroCard()" *ngIf="services.length > 1">‹</button>
+      <button class="hero-arrow hero-arrow--next" (click)="nextHeroCard()" *ngIf="services.length > 1">›</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ GRID DE SERVICIOS ══ -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="services-grid">
+      <div *ngFor="let s of services; let i = index"
+           class="service-card"
+           [class.active]="activeIndex === i"
+           (click)="toggle(i)">
+
+        <div class="card-top">
+          <div class="card-icon">{{ s.icon }}</div>
+          <div class="card-num">{{ s.num }}</div>
+        </div>
+        <h3 class="card-title">{{ s.name }}</h3>
+        <p class="card-short">{{ s.short }}</p>
+        <div class="card-arrow" [class.rotated]="activeIndex === i">›</div>
+
+        <div class="card-detail" *ngIf="activeIndex === i">
+          <p class="detail-desc">{{ s.desc }}</p>
+          <ul class="feature-list">
+            <li *ngFor="let f of s.features">
+              <span class="check">✓</span> {{ f }}
+            </li>
+          </ul>
+          <a [href]="s.waLink" target="_blank" class="btn-wa-card" (click)="$event.stopPropagation()">
+            <svg viewBox="0 0 32 32" width="16" height="16" fill="currentColor">
+              <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/>
+            </svg>
+            Consultar por WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ¿POR QUÉ EDO? ══ -->
+<section class="section bg-off-white">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2 class="section-title-dark">¿Por qué elegir<br>EDO Ingeniería Digital?</h2>
+    </div>
+    <div class="why-grid">
+      <div *ngFor="let w of whyEdo" class="why-card">
+        <div class="why-icon">{{ w.icon }}</div>
+        <h3>{{ w.title }}</h3>
+        <p>{{ w.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="container text-center">
+    <h2 class="cta-title">¿Listo para digitalizar<br>su operación?</h2>
+    <p class="cta-desc">
+      Cuéntenos su problema. En menos de 24 horas le respondemos
+      con un diagnóstico gratuito y una propuesta técnica concreta.
+    </p>
+    <div class="cta-btns">
+      <a href="https://wa.me/573205554295?text=Hola%2C%20quiero%20solicitar%20un%20diagn%C3%B3stico%20gratuito%20para%20mi%20empresa" target="_blank" class="btn-hero-primary">
+        💬 Solicitar diagnóstico por WhatsApp
+      </a>
+      <a routerLink="/portafolio" class="btn-ghost">Ver proyectos realizados</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img src="assets/logo.webp" alt="EDO Ingeniería Digital" class="footer-logo">
+        <div>
+          <div class="footer-brand-name">EDO Ingeniería Digital</div>
+          <div class="footer-brand-sub">Montería, Córdoba · Colombia</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Quick links</div>
+      <nav class="footer-nav">
+        <a routerLink="/">Inicio</a>
+        <a routerLink="/servicios">Servicios</a>
+        <a routerLink="/portafolio">Proyectos</a>
+        <a routerLink="/blog">Blog</a>
+      </nav>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Información</div>
+      <nav class="footer-nav">
+        <a routerLink="/contacto">Contáctanos</a>
+        <a routerLink="/portafolio">Casos de Éxito</a>
+      </nav>
+    </div>
+    <div class="footer-col">
+      <div class="footer-heading">Contacto</div>
+      <div class="footer-contact">
+        <div class="footer-contact-item">📍 Montería, Córdoba</div>
+        <div class="footer-contact-item">✉️ contacto&#64;edoingenieriadigital.com</div>
+        <div class="footer-contact-item">📱 +57 320 555 4295</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container"><span>© 2026 EDO Ingeniería Digital</span></div>
+  </div>
+</footer>
