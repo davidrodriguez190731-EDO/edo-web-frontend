@@ -294,6 +294,7 @@
 }
 
 @media (max-width: 600px) {
+  .hero-left { padding: 44px 20px 32px; }
   .hero-left     { padding: 44px 20px 32px; }
   .hero-right    { padding: 24px 16px 24px; }
   .stack-grid    { grid-template-columns: repeat(2, 1fr); }

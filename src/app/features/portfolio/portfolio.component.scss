@@ -22,7 +22,7 @@
 /* Izquierda */
 .hero-left {
   position: relative; overflow: hidden;
-  padding: 72px 48px;
+  padding: 40px 48px 72px;
   display: flex; align-items: center;
 }
 
@@ -437,7 +437,7 @@
 @media (max-width: 768px) {
   .hero-split { grid-template-columns: 1fr; padding-top: 40px; }
   .hero-carousel { height: 220px; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
-  .hero-left { padding: 48px 24px 32px; }
+  .hero-left { padding: 44px 20px 32px; }
 }
 
 @media (max-width: 600px) {
@@ -512,4 +512,41 @@
 }
 @media (max-width: 640px) {
   .filter-wrap { max-width: 100%; }
+}
+// ══ BUSCADOR + FILTRO ════════════════════════════════════════
+.search-filter-bar {
+  display: flex; gap: 12px; align-items: flex-end;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.search-wrap {
+  flex: 1; min-width: 200px; position: relative;
+  display: flex; align-items: center;
+}
+.search-icon {
+  position: absolute; left: 14px; color: #94A3B8; pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 11px 36px 11px 40px;
+  border: 1.5px solid #E2E8F0; border-radius: 12px;
+  font-size: 14px; color: #1E293B; background: #fff;
+  font-family: inherit; box-sizing: border-box;
+  transition: border-color 0.2s;
+  &::placeholder { color: #CBD5E1; }
+  &:focus { outline: none; border-color: #E87722; }
+}
+.search-clear {
+  position: absolute; right: 12px;
+  background: none; border: none; color: #94A3B8;
+  cursor: pointer; font-size: 13px; padding: 4px;
+  &:hover { color: #64748B; }
+}
+.search-results-info {
+  font-size: 13px; color: #94A3B8; margin-bottom: 20px;
+  font-family: inherit;
+  strong { color: #1E293B; }
+}
+@media (max-width: 640px) {
+  .search-filter-bar { flex-direction: column; }
+  .search-wrap { min-width: 100%; }
+  .filter-wrap { width: 100%; max-width: 100%; }
 }

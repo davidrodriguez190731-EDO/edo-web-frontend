@@ -62,7 +62,13 @@ import { AuthService } from '@app/core/services/auth.service';
         <a routerLink="/nosotros"   routerLinkActive="active" class="mobile-link" (click)="closeMenu()">Nosotros</a>
         <div class="mobile-divider"></div>
         <a routerLink="/contacto" class="mobile-cta" (click)="closeMenu()">Contacto</a>
-        <a *ngIf="auth.isLoggedIn()" routerLink="/admin" class="mobile-admin" (click)="closeMenu()">Admin</a>
+        <a *ngIf="auth.isLoggedIn()" routerLink="/admin" class="mobile-admin" (click)="closeMenu()">Panel Admin</a>
+        <a *ngIf="!auth.isLoggedIn()" routerLink="/admin/login" class="mobile-admin-login" (click)="closeMenu()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          Administrador
+        </a>
       </div>
     </div>
   `,
@@ -91,6 +97,13 @@ import { AuthService } from '@app/core/services/auth.service';
     .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
     .brand-sub  { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; }
 
+    .mobile-admin-login {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 10px; margin-top: 4px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.35);
+      text-decoration: none; transition: color 0.2s;
+      &:hover { color: rgba(255,255,255,0.6); }
+    }
     /* Links desktop */
     .nav-links { display: flex; gap: 2px; }
     .nav-link {

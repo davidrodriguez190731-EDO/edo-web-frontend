@@ -18,6 +18,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   projects: any[] = [];
   filtered:  any[] = [];
   categories: string[] = [];
+  searchQuery     = '';
   activeCategory = 'Todos';
   selected:  any  = null;
   loading    = true;
@@ -77,6 +78,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   setCategory(cat: string) {
+    this.searchQuery     = '';
     this.activeCategory = cat;
     this.filtered = cat === 'Todos'
       ? [...this.projects]
@@ -125,4 +127,31 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEsc() { this.closeModal(); }
+
+  onSearch() {
+    this.applyFilters();
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let result = this.projects;
+    if (this.activeCategory !== 'Todos') {
+      result = result.filter(p => p.category === this.activeCategory);
+    }
+    if (this.searchQuery.trim()) {
+      const q = this.searchQuery.toLowerCase();
+      result = result.filter(p =>
+        p.name?.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q) ||
+        p.stack?.toLowerCase().includes(q)
+      );
+    }
+    this.filtered = result;
+  }
+
 }
