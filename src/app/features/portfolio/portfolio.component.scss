@@ -550,3 +550,57 @@
   .search-wrap { min-width: 100%; }
   .filter-wrap { width: 100%; max-width: 100%; }
 }
+
+// ══ GRID REDISEÑO ════════════════════════════════════════════
+
+// Contenedor principal de filtros
+.portfolio-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+  .search-wrap { flex: 1; }
+  .filter-wrap { flex-shrink: 0; width: 200px; }
+}
+
+// Grid de proyectos
+.projects-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 20px !important;
+}
+
+// Cards compactas
+.pcard-visual { height: 180px !important; }
+.pcard-body   { padding: 14px 16px 12px !important; }
+.pcard-name   { font-size: 15px !important; margin: 4px 0 6px !important; }
+.pcard-desc   { font-size: 12px !important; -webkit-line-clamp: 2 !important; }
+.pcard-highlights { display: none !important; }
+.pcard-cta    { font-size: 12px !important; padding-top: 8px !important; }
+
+@media (max-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr !important; }
+  .portfolio-controls { flex-direction: column; .filter-wrap { width: 100%; } }
+  .pcard-visual { height: 160px !important; }
+}
+
+// ══ FILTER TABS ══════════════════════════════════════════════
+.filter-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.ftab {
+  padding: 7px 16px; border-radius: 20px; border: 1.5px solid #CBD5E1;
+  background: #fff; color: #475569; font-size: 13px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+  &:hover { border-color: #1B4B8A; color: #1B4B8A; }
+  &.active { background: #1B4B8A; border-color: #1B4B8A; color: #fff; }
+}
+.ftab-count {
+  background: rgba(255,255,255,0.2); border-radius: 10px;
+  padding: 1px 7px; font-size: 11px;
+  .ftab:not(.active) & { background: #F1F5F9; color: #64748B; }
+}

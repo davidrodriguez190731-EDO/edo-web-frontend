@@ -77,8 +77,8 @@
     <ng-container *ngIf="!loading && !error">
 
             <!-- Buscador + Filtro -->
-      <div class="search-filter-bar">
-        <div class="search-wrap">
+      <!-- Buscador -->
+      <div class="search-wrap" style="margin-bottom:16px">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
@@ -86,11 +86,14 @@
                  placeholder="Buscar solución..." (ngModelChange)="onSearch()">
           <button class="search-clear" *ngIf="searchQuery" (click)="clearSearch()">✕</button>
         </div>
-        <div class="filter-wrap">
-          <select class="filter-select" [(ngModel)]="activeCategory" (ngModelChange)="setCategory($event)">
-            <option *ngFor="let c of categories" [value]="c">{{ c }} ({{ countFor(c) }})</option>
-          </select>
-        </div>
+      <!-- Tabs categoría -->
+      <div class="filter-tabs" style="margin-bottom:28px">
+        <button *ngFor="let c of categories"
+                class="ftab"
+                [class.active]="activeCategory === c"
+                (click)="setCategory(c)">
+          {{ c }} <span class="ftab-count">{{ countFor(c) }}</span>
+        </button>
       </div>
       <div class="search-results-info" *ngIf="searchQuery">
         {{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }} para "<strong>{{ searchQuery }}</strong>"
