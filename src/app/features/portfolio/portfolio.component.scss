@@ -1,3 +1,11 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
 /* ══ HERO DIVIDIDO ══════════════════════════════════════════════ */
 .portfolio-hero {
   padding-top: 70px;
@@ -431,7 +439,7 @@
 /* ══ RESPONSIVE ══════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
-  .pcard--featured { grid-column: span 2; }
+  .pcard--featured { grid-column: span 1; }
 }
 
 @media (max-width: 768px) {
@@ -603,4 +611,12 @@
   background: rgba(255,255,255,0.2); border-radius: 10px;
   padding: 1px 7px; font-size: 11px;
   .ftab:not(.active) & { background: #F1F5F9; color: #64748B; }
+}
+
+// ══ FEATURED: mismo tamaño, borde naranja ═══════════════════
+.pcard--featured {
+  grid-column: span 1 !important;
+  border: 2px solid #E87722 !important;
+  box-shadow: 0 4px 24px rgba(232,119,34,0.18) !important;
+  // pcard-featured-style marker
 }
