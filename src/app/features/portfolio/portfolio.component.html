@@ -13,12 +13,12 @@
         <div class="hero-tag">
           <span class="dot-live"></span> Casos de éxito
         </div>
-        <h1>Proyectos que<br><span class="accent">transforman<br>empresas</span></h1>
-        <p>Sistemas reales, en producción, resolviendo problemas reales en empresas colombianas.</p>
+        <h1>Soluciones que<br><span class="accent">digitalizan<br>su operación</span></h1>
+        <p>No vendemos software genérico. Analizamos su operación y construimos la herramienta exacta que su empresa necesita.</p>
         <div class="hero-stats">
           <div class="stat">
             <div class="stat-num">{{ projects.length }}+</div>
-            <div class="stat-label">Proyectos</div>
+            <div class="stat-label">Soluciones</div>
           </div>
           <div class="stat">
             <div class="stat-num">100%</div>
@@ -76,14 +76,12 @@
 
     <ng-container *ngIf="!loading && !error">
 
-      <!-- Tabs de categoría -->
-      <div class="tabs" *ngIf="categories.length > 1">
-        <button *ngFor="let c of categories"
-                class="tab" [class.active]="activeCategory === c"
-                (click)="setCategory(c)">
-          {{ c }}
-          <span class="tab-count">{{ countFor(c) }}</span>
-        </button>
+            <!-- Filtros -->
+      <div class="filter-wrap" *ngIf="categories.length > 1">
+        <label class="filter-label">Filtrar por tipo</label>
+        <select class="filter-select" [(ngModel)]="activeCategory" (ngModelChange)="setCategory($event)">
+          <option *ngFor="let c of categories" [value]="c">{{ c }} ({{ countFor(c) }})</option>
+        </select>
       </div>
 
       <!-- Sin proyectos -->
@@ -178,7 +176,7 @@
       <div class="footer-heading">Información</div>
       <nav class="footer-nav">
         <a routerLink="/contacto">Contáctanos</a>
-        <a routerLink="/portafolio">Casos de Éxito</a>
+        <a routerLink="/portafolio">Soluciones entregadasxito</a>
       </nav>
     </div>
     <div class="footer-col">

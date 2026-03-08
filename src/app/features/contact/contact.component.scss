@@ -245,3 +245,7 @@
   .contact-form-wrap { padding: 24px; }
   .footer-inner { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .contact-hero { padding-top: 40px; }
+}
