@@ -1,4 +1,15 @@
 <div class="admin-layout">
+  <!-- Topbar móvil -->
+  <div class="mobile-topbar">
+    <button class="mobile-menu-btn" (click)="sidebarOpen = true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <span class="mobile-topbar-title">{{ currentSection?.label || 'Panel Admin' }}</span>
+  </div>
+  <!-- Overlay -->
+  <div class="sidebar-overlay" *ngIf="sidebarOpen" (click)="sidebarOpen = false"></div>
 
   <!-- ══ SIDEBAR ══ -->
   <aside class="admin-sidebar">

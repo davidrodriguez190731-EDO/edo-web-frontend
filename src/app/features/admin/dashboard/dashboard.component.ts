@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
 
+  sidebarOpen   = false;
   activePage = 'home';
   activeSection = 'home_hero';
   config: ConfigMap = {};
