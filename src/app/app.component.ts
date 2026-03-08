@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, CommonModule],
   template: `
-    <app-navbar></app-navbar>
+    <app-navbar *ngIf="!isAdminRoute"></app-navbar>
     <router-outlet></router-outlet>
-
     <!-- Botón WhatsApp flotante global -->
-    <a class="wa-float"
+    <a class="wa-float" *ngIf="!isAdminRoute"
        href="https://wa.me/573205554295?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20EDO%20Ingenier%C3%ADa%20Digital"
        target="_blank" aria-label="WhatsApp">
       <svg viewBox="0 0 32 32" width="26" height="26" fill="#fff">
@@ -39,16 +40,25 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
       animation: none;
     }
     .wa-label { letter-spacing: 0.3px; }
-
     @keyframes waPulse {
       0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.45); }
       50%       { box-shadow: 0 6px 32px rgba(37,211,102,0.75), 0 0 0 8px rgba(37,211,102,0.1); }
     }
-
     @media (max-width: 600px) {
       .wa-float { padding: 14px; border-radius: 50%; }
       .wa-label { display: none; }
     }
   `]
 })
-export class AppComponent {}
+export class AppComponent {
+  private router = inject(Router);
+  isAdminRoute = false;
+
+  constructor() {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe((e: any) => {
+      this.isAdminRoute = e.urlAfterRedirects.startsWith('/admin');
+    });
+  }
+}

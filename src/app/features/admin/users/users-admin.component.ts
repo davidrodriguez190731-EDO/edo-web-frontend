@@ -64,7 +64,7 @@ interface AdminUser {
   </div>
 
   <!-- Modal crear/editar -->
-  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-overlay" *ngIf="showModal">
     <div class="modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ editMode ? 'Editar usuario' : 'Nuevo usuario' }}</h2>
@@ -106,7 +106,7 @@ interface AdminUser {
   </div>
 
   <!-- Modal confirmar eliminar -->
-  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="showDeleteModal=false">
+  <div class="modal-overlay" *ngIf="showDeleteModal">
     <div class="modal modal-sm" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Eliminar usuario</h2>
