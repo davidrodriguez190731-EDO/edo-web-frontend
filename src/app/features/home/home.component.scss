@@ -372,3 +372,133 @@
   .hero-left  { padding: 44px 20px 32px; }
   .hero-right { padding: 20px 16px 24px; }
 }
+
+// ══ HOME PCARDS (mismo diseño que portafolio) ════════════════
+.home-pcards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px)  { grid-template-columns: 1fr; }
+}
+.pcard {
+  background: #fff; border-radius: 16px; overflow: hidden;
+  cursor: pointer; position: relative;
+  box-shadow: 0 2px 12px rgba(15,46,90,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex; flex-direction: column;
+  &:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(15,46,90,0.14); }
+  &.pcard--featured { border: 2px solid #E87722; box-shadow: 0 4px 24px rgba(232,119,34,0.18); }
+}
+.pcard-visual {
+  height: 180px; position: relative; overflow: hidden;
+  img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .pcard:hover & img { transform: scale(1.05); }
+}
+.pcard-visual-fallback {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+}
+.pcard-icon { font-size: 48px; opacity: 0.7; }
+.pcard-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,22,40,0.5) 0%, transparent 60%);
+}
+.pcard-badge-status {
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(10,22,40,0.75); color: #fff;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; gap: 5px;
+  &.status-prod { background: rgba(16,185,129,0.85); }
+  .sdot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+}
+.pcard-badge-featured {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(232,119,34,0.9); color: #fff;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+}
+.pcard-body { padding: 14px 16px 12px; flex: 1; display: flex; flex-direction: column; }
+.pcard-category { font-size: 10px; font-weight: 700; color: #E87722; text-transform: uppercase; letter-spacing: 0.08em; }
+.pcard-name { font-size: 15px; font-weight: 800; color: #0F2E5A; margin: 4px 0 6px; line-height: 1.3; }
+.pcard-desc { font-size: 12px; color: #64748B; line-height: 1.6; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pcard-cta { font-size: 12px; font-weight: 700; color: #1B4B8A; padding-top: 10px;
+  display: flex; align-items: center; gap: 4px;
+  .arrow { transition: transform 0.2s; }
+  .pcard:hover & .arrow { transform: translateX(4px); }
+}
+.pcard-line { height: 3px; width: 100%; transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease; .pcard:hover & { transform: scaleX(1); } }
+
+// Modal (mismo del portafolio)
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(10,22,40,0.85); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn 0.2s ease;
+}
+.modal {
+  background: #fff; border-radius: 20px;
+  width: 100%; max-width: 780px; max-height: 90vh;
+  display: flex; flex-direction: column;
+  overflow: hidden; position: relative;
+  animation: slideUp 0.25s ease;
+}
+.modal-left {
+  background: #0A1628; display: flex; align-items: stretch;
+  height: 260px; flex-shrink: 0; border-radius: 20px 20px 0 0; overflow: hidden;
+  .modal-gallery { width: 100%; position: relative; overflow: hidden; display: flex; }
+  .mgallery-track { display: flex; width: 100%; transition: transform 0.35s ease;
+    img { min-width: 100%; height: 100%; object-fit: cover; } }
+  .mgallery-nav {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,0,0,0.6); border-radius: 20px; padding: 5px 14px;
+    button { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 4px; }
+    span { color: rgba(255,255,255,0.7); font-size: 12px; }
+  }
+  .modal-gallery-placeholder { width: 100%; display: flex; align-items: center; justify-content: center; }
+}
+.modal-right { display: flex; flex-direction: column; flex: 1; position: relative; overflow: hidden; }
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: #F1F5F9; border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer; font-size: 15px; color: #64748B; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  &:hover { background: #E2E8F0; }
+}
+.modal-body { flex: 1; overflow-y: auto; padding: 32px 24px 90px; }
+.modal-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.modal-title { font-size: 22px; font-weight: 900; color: #0F2E5A; margin: 0 0 12px; line-height: 1.3; }
+.modal-desc { font-size: 13px; color: #475569; line-height: 1.75; margin-bottom: 18px; }
+.modal-highlights {
+  h4 { font-size: 11px; font-weight: 700; color: #94A3B8; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 10px; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
+  li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #334155; }
+  .hcheck { color: #E87722; font-weight: 700; flex-shrink: 0; }
+}
+.modal-cta-sticky {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 14px 24px 20px; border-top: 1px solid #F1F5F9;
+  display: flex; gap: 10px; background: #fff;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08); z-index: 20;
+  .btn-cta-primary {
+    flex: 1; padding: 13px 16px; background: #E87722; color: #fff;
+    border: none; border-radius: 10px; font-weight: 700; font-size: 14px;
+    font-family: inherit; cursor: pointer; text-decoration: none;
+    text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;
+    &:hover { background: #cf6a1a; }
+  }
+  .btn-cta-secondary {
+    padding: 13px 18px; background: #F1F5F9; color: #475569;
+    border: none; border-radius: 10px; font-weight: 600; font-size: 13px;
+    font-family: inherit; cursor: pointer;
+    &:hover { background: #E2E8F0; }
+  }
+}
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@media (max-width: 700px) {
+  .modal { grid-template-columns: 1fr; max-height: 95vh; }
+  .modal-left { min-height: 200px; max-height: 220px; border-radius: 20px 20px 0 0; }
+  .modal-right { max-height: calc(95vh - 220px); }
+}

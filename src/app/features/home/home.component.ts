@@ -21,6 +21,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   private baseUrl = environment.apiUrl.replace('/api', '');
 
   projects: any[] = [];
+  selected: any = null;
+  modalImgIndex = 0;
+  apiBase = environment.apiUrl.replace('/api', '');
   blogs:    any[] = [];
 
   // Imágenes hero desde BD
@@ -118,4 +121,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     clearInterval(this.autoTimer);
   }
+
+  getCategoryIcon(cat: string): string {
+    const icons: any = { 'Ingeniería': '⚙️', 'Compras y Contabilidad': '📊', 'Proyectos': '🏗️', 'Sistema de gestión': '🖥️' };
+    return icons[cat] || '💻';
+  }
+  openModal(p: any) { this.selected = p; this.modalImgIndex = 0; }
+  closeModal()      { this.selected = null; }
+  prevModalImg()    { if (this.selected?.images?.length) this.modalImgIndex = (this.modalImgIndex - 1 + this.selected.images.length) % this.selected.images.length; }
+  nextModalImg()    { if (this.selected?.images?.length) this.modalImgIndex = (this.modalImgIndex + 1) % this.selected.images.length; }
+  waProject(p: any) { return `https://wa.me/573205554295?text=Hola,%20vi%20el%20proyecto%20"${encodeURIComponent(p.name)}"%20y%20quiero%20algo%20similar`; }
 }

@@ -193,20 +193,78 @@
     <div class="section-header text-center">
       <h2 class="section-title-dark">Casos de Éxito</h2>
     </div>
-    <div class="projects-grid">
-      <div *ngFor="let p of projects" class="project-card-new card">
-        <div class="project-thumb" [style.background]="'linear-gradient(135deg,' + p.color + '22, ' + p.color + '44)'">
-          <div class="project-thumb-icon">🖥️</div>
-        </div>
-        <div class="project-body">
-          <div class="project-badges">
-            <span class="badge badge--green">{{ p.status }}</span>
-            <span class="badge badge--blue">{{ p.category }}</span>
+    <div class="projects-grid home-pcards">
+      <div *ngFor="let p of projects; let i = index"
+           class="pcard"
+           [class.pcard--featured]="p.featured"
+           [style.--accent]="p.color"
+           (click)="openModal(p)">
+        <div class="pcard-visual">
+          <img *ngIf="p.images?.length" [src]="apiBase + p.images[0]" alt="{{ p.name }}" loading="lazy">
+          <div *ngIf="!p.images?.length" class="pcard-visual-fallback"
+               [style.background]="'linear-gradient(135deg,' + p.color + '22 0%,' + p.color + '44 100%)'">
+            <span class="pcard-icon">{{ getCategoryIcon(p.category) }}</span>
           </div>
-          <h3>{{ p.name }}</h3>
-          <p>{{ p.description }}</p>
-          <div class="tag-row">
-            <span *ngFor="let t of p.stack" class="tag">{{ t }}</span>
+          <div class="pcard-overlay"></div>
+          <div class="pcard-badge-status" [class.status-prod]="p.status === 'En producción'">
+            <span class="sdot"></span>{{ p.status }}
+          </div>
+          <div class="pcard-badge-featured" *ngIf="p.featured">⭐ Destacado</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-category">{{ p.category }}</div>
+          <h3 class="pcard-name">{{ p.name }}</h3>
+          <p class="pcard-desc">{{ p.description | slice:0:110 }}{{ p.description?.length > 110 ? '...' : '' }}</p>
+          <div class="pcard-cta">Ver proyecto <span class="arrow">→</span></div>
+        </div>
+        <div class="pcard-line" [style.background]="p.color"></div>
+      </div>
+    </div>
+
+    <!-- Modal detalle proyecto -->
+    <div class="modal-backdrop" *ngIf="selected" (click)="closeModal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-left">
+          <div class="modal-gallery" *ngIf="selected.images?.length">
+            <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
+              <img *ngFor="let img of selected.images" [src]="apiBase + img" alt="{{ selected.name }}">
+            </div>
+            <div class="mgallery-nav" *ngIf="selected.images.length > 1">
+              <button (click)="prevModalImg(); $event.stopPropagation()">&#8249;</button>
+              <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
+              <button (click)="nextModalImg(); $event.stopPropagation()">&#8250;</button>
+            </div>
+          </div>
+          <div class="modal-gallery-placeholder" *ngIf="!selected.images?.length"
+               [style.background]="'linear-gradient(135deg,' + selected.color + '33 0%,' + selected.color + '66 100%)'">
+            <span style="font-size:64px">{{ getCategoryIcon(selected.category) }}</span>
+          </div>
+        </div>
+        <div class="modal-right">
+          <button class="modal-close" (click)="closeModal()">&#x2715;</button>
+          <div class="modal-body">
+            <div class="modal-meta">
+              <span class="pcard-category">{{ selected.category }}</span>
+              <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
+                <span class="sdot"></span>{{ selected.status }}
+              </span>
+            </div>
+            <h2 class="modal-title">{{ selected.name }}</h2>
+            <p class="modal-desc">{{ selected.description }}</p>
+            <div class="modal-highlights" *ngIf="selected.highlights?.length">
+              <h4>Funcionalidades clave</h4>
+              <ul>
+                <li *ngFor="let h of selected.highlights">
+                  <span class="hcheck">&#x2713;</span>{{ h }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="modal-cta-sticky">
+            <a [href]="waProject(selected)" target="_blank" class="btn-cta-primary">
+              &#x1F4AC; Quiero algo similar
+            </a>
+            <button class="btn-cta-secondary" (click)="closeModal()">Cerrar</button>
           </div>
         </div>
       </div>
