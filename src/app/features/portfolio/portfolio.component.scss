@@ -313,7 +313,7 @@
 
 .modal {
   background: #fff; border-radius: 22px;
-  width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto;
+  width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto;
   position: relative; animation: slideUp 0.25s ease;
 }
 
@@ -618,4 +618,88 @@
   border: 2px solid #E87722 !important;
   box-shadow: 0 4px 24px rgba(232,119,34,0.18) !important;
   // pcard-featured-style marker
+}
+
+// ══ MODAL REDISEÑO 2COL ══════════════════════════════════════
+.modal-left {
+  background: #0A1628;
+  display: flex; align-items: stretch; min-height: 420px;
+  border-radius: 20px 0 0 20px; overflow: hidden;
+  .modal-gallery { width: 100%; position: relative; overflow: hidden; display: flex; }
+  .mgallery-track {
+    display: flex; width: 100%; transition: transform 0.35s ease;
+    img { min-width: 100%; height: 100%; object-fit: cover; }
+  }
+  .mgallery-nav {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,0,0,0.6); border-radius: 20px; padding: 5px 14px;
+    button { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 4px; &:hover { color: #E87722; } }
+    span { color: rgba(255,255,255,0.7); font-size: 12px; }
+  }
+  .modal-gallery-placeholder {
+    width: 100%; display: flex; align-items: center; justify-content: center;
+  }
+}
+.modal-right {
+  display: flex !important; flex-direction: column !important; max-height: 88vh !important; position: relative !important; overflow: hidden !important;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: #F1F5F9; border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer; font-size: 15px;
+  color: #64748B; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  &:hover { background: #E2E8F0; }
+}
+.modal-body { flex: 1 !important; overflow-y: auto !important; padding: 32px 24px 90px !important; }
+.modal-cta-sticky {
+  position: absolute !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+  padding: 14px 24px 20px; border-top: 1px solid #F1F5F9;
+  display: flex; gap: 10px; background: #fff;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+  .btn-cta-primary {
+    flex: 1; padding: 13px 16px; background: #E87722; color: #fff;
+    border: none; border-radius: 10px; font-weight: 700; font-size: 14px;
+    font-family: inherit; cursor: pointer; text-decoration: none;
+    text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;
+    &:hover { background: #cf6a1a; }
+  }
+  .btn-cta-secondary {
+    padding: 13px 18px; background: #F1F5F9; color: #475569;
+    border: none; border-radius: 10px; font-weight: 600; font-size: 13px;
+    font-family: inherit; cursor: pointer;
+    &:hover { background: #E2E8F0; }
+  }
+}
+@media (max-width: 700px) {
+  .modal { grid-template-columns: 1fr !important; max-height: 95vh; }
+  .modal-left { min-height: 200px; max-height: 220px; border-radius: 20px 20px 0 0; }
+  .modal-right { max-height: calc(95vh - 220px); }
+}
+
+// ══ MODAL CTA FORCE ══════════════════════════════════════════
+:host .modal-right {
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+:host .modal-right .modal-body {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding-bottom: 90px !important;
+}
+:host .modal-right .modal-cta-sticky {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: #fff !important;
+  border-top: 1px solid #F1F5F9 !important;
+  padding: 14px 24px 20px !important;
+  display: flex !important;
+  gap: 10px !important;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08) !important;
+  z-index: 20 !important;
 }

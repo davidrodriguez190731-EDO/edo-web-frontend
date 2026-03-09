@@ -208,52 +208,56 @@
   </div>
 </footer>
 
-<!-- ══ MODAL ══ -->
+<!-- ╔═ MODAL ═╗ -->
 <div class="modal-backdrop" *ngIf="selected" (click)="closeModal()">
   <div class="modal" (click)="$event.stopPropagation()">
-    <button class="modal-close" (click)="closeModal()">✕</button>
 
-    <!-- Galería de imágenes en el modal -->
-    <div class="modal-gallery" *ngIf="selected.images?.length">
-      <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
-        <img *ngFor="let img of selected.images" [src]="apiBase + img" alt="{{ selected.name }}">
+    <!-- Izquierda: galería -->
+    <div class="modal-left">
+      <div class="modal-gallery" *ngIf="selected.images?.length">
+        <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
+          <img *ngFor="let img of selected.images" [src]="apiBase + img" alt="{{ selected.name }}">
+        </div>
+        <div class="mgallery-nav" *ngIf="selected.images.length > 1">
+          <button (click)="prevModalImg(); $event.stopPropagation()">&#8249;</button>
+          <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
+          <button (click)="nextModalImg(); $event.stopPropagation()">&#8250;</button>
+        </div>
       </div>
-      <div class="mgallery-nav" *ngIf="selected.images.length > 1">
-        <button (click)="prevModalImg()">‹</button>
-        <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
-        <button (click)="nextModalImg()">›</button>
+      <div class="modal-gallery-placeholder" *ngIf="!selected.images?.length"
+           [style.background]="'linear-gradient(135deg,' + selected.color + '33 0%,' + selected.color + '66 100%)'">
+        <span style="font-size:64px">{{ getCategoryIcon(selected.category) }}</span>
       </div>
-      <div class="modal-bar-top" [style.background]="selected.color"></div>
     </div>
-    <div class="modal-bar-top" *ngIf="!selected.images?.length" [style.background]="selected.color"></div>
 
-    <div class="modal-body">
-      <div class="modal-meta">
-        <span class="pcard-category">{{ selected.category }}</span>
-        <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
-          <span class="sdot"></span>{{ selected.status }}
-        </span>
+    <!-- Derecha: contenido -->
+    <div class="modal-right">
+      <button class="modal-close" (click)="closeModal()">&#x2715;</button>
+      <div class="modal-body">
+        <div class="modal-meta">
+          <span class="pcard-category">{{ selected.category }}</span>
+          <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
+            <span class="sdot"></span>{{ selected.status }}
+          </span>
+        </div>
+        <h2 class="modal-title">{{ selected.name }}</h2>
+        <p class="modal-desc">{{ selected.description }}</p>
+        <div class="modal-highlights" *ngIf="selected.highlights?.length">
+          <h4>Funcionalidades clave</h4>
+          <ul>
+            <li *ngFor="let h of selected.highlights">
+              <span class="hcheck">&#x2713;</span>{{ h }}
+            </li>
+          </ul>
+        </div>
       </div>
-      <h2 class="modal-title">{{ selected.name }}</h2>
-      <p class="modal-desc">{{ selected.description }}</p>
-
-      <div class="modal-highlights" *ngIf="selected.highlights?.length">
-        <h4>Funcionalidades clave</h4>
-        <ul>
-          <li *ngFor="let h of selected.highlights">
-            <span class="hcheck">✓</span>{{ h }}
-          </li>
-        </ul>
-      </div>
-
-      <div class="modal-footer">
-        <a [href]="waProject(selected)" target="_blank" class="btn-wa">
-          <svg viewBox="0 0 32 32" width="16" height="16" fill="currentColor">
-            <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/>
-          </svg>
-          Quiero algo similar
+      <div class="modal-cta-sticky">
+        <a [href]="waProject(selected)" target="_blank" class="btn-cta-primary">
+          &#x1F4AC; Quiero algo similar
         </a>
+        <button class="btn-cta-secondary" (click)="closeModal()">Cerrar</button>
       </div>
     </div>
+
   </div>
 </div>
