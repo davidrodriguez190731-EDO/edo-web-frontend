@@ -305,7 +305,7 @@ import { environment } from '../../../../environments/environment';
       .footer-tagline { margin: 0 auto 20px; }
       .footer-heading { justify-content: center; }
       .footer-heading-line { margin: 0 auto 18px; }
-      .footer-socials { display: none; }
+      .footer-socials { justify-content: center; }
       .footer-socials-mobile {
         display: flex; justify-content: center; gap: 10px;
         margin-top: 20px; padding-top: 16px;
