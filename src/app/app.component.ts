@@ -1,52 +1,51 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, CommonModule],
   template: `
     <app-navbar *ngIf="!isAdminRoute"></app-navbar>
     <router-outlet></router-outlet>
-    <!-- Botón WhatsApp flotante global -->
+    <app-footer *ngIf="!isAdminRoute"></app-footer>
+    <!-- WhatsApp flotante global -->
     <a class="wa-float" *ngIf="!isAdminRoute"
        href="https://wa.me/573205554295?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20EDO%20Ingenier%C3%ADa%20Digital"
        target="_blank" aria-label="WhatsApp">
-      <svg viewBox="0 0 32 32" width="26" height="26" fill="#fff">
-        <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/>
+      <svg class="wa-float-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
       </svg>
-      <span class="wa-label">¡Escríbenos!</span>
     </a>
   `,
   styles: [`
     .wa-float {
       position: fixed; bottom: 28px; right: 28px; z-index: 9999;
-      display: flex; align-items: center; gap: 10px;
-      background: #25D366; color: #fff;
-      padding: 13px 20px 13px 16px; border-radius: 50px;
-      text-decoration: none; font-weight: 700; font-size: 14px;
-      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      width: 60px; height: 60px;
+      background: #25D366;
+      border-radius: 50%;
+      text-decoration: none;
       box-shadow: 0 6px 24px rgba(37,211,102,0.45);
       transition: all 0.3s;
       animation: waPulse 3s infinite;
     }
     .wa-float:hover {
       background: #20b958;
-      transform: scale(1.06);
+      transform: scale(1.1);
       box-shadow: 0 8px 32px rgba(37,211,102,0.6);
       animation: none;
     }
-    .wa-label { letter-spacing: 0.3px; }
+    .wa-float-icon {
+      flex-shrink: 0;
+    }
     @keyframes waPulse {
       0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.45); }
       50%       { box-shadow: 0 6px 32px rgba(37,211,102,0.75), 0 0 0 8px rgba(37,211,102,0.1); }
-    }
-    @media (max-width: 600px) {
-      .wa-float { padding: 14px; border-radius: 50%; }
-      .wa-label { display: none; }
     }
   `]
 })

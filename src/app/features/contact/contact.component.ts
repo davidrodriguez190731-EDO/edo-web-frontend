@@ -27,22 +27,23 @@ export class ContactComponent implements OnInit {
 
   projectTypes = [
     'Sistema a la medida',
-    'Página web profesional',
-    'App móvil PWA',
-    'App web de gestión',
-    'Automatización de procesos',
+    'P\u00e1gina web profesional',
+    'App m\u00f3vil PWA',
+    'App web de gesti\u00f3n',
+    'Automatizaci\u00f3n de procesos',
     'Otro',
   ];
 
-  // Datos de contacto — se cargan desde BD
   contactData = {
     email:    'contacto@edoingenieriadigital.com',
     phone:    '+57 320 555 4295',
     whatsapp: '573205554295',
-    address:  'Montería, Córdoba',
-    city:     'Montería, Córdoba, Colombia',
+    address:  'Monter\u00eda, C\u00f3rdoba',
+    city:     'Monter\u00eda, C\u00f3rdoba, Colombia',
     schedule: 'Lunes a viernes 8am - 6pm',
   };
+
+  socials = { instagram: '', tiktok: '', facebook: '', linkedin: '' };
 
   ngOnInit() {
     this.particles = Array.from({ length: 14 }, () => ({
@@ -63,6 +64,12 @@ export class ContactComponent implements OnInit {
         if (cfg.contact_address)  this.contactData.address  = cfg.contact_address;
         if (cfg.contact_city)     this.contactData.city     = cfg.contact_city;
         if (cfg.contact_schedule) this.contactData.schedule = cfg.contact_schedule;
+        this.socials = {
+          instagram: cfg['social_instagram'] || '',
+          tiktok:    cfg['social_tiktok']    || '',
+          facebook:  cfg['social_facebook']  || '',
+          linkedin:  cfg['social_linkedin']  || ''
+        };
       }
     });
   }
@@ -86,7 +93,7 @@ export class ContactComponent implements OnInit {
       },
       error: () => {
         this.sending = false;
-        this.error   = 'Error al enviar. Intente de nuevo o escríbanos por WhatsApp.';
+        this.error   = 'Error al enviar. Intente de nuevo o escr\u00edbanos por WhatsApp.';
       }
     });
   }
