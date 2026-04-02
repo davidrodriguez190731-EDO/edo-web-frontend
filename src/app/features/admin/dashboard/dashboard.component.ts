@@ -194,7 +194,7 @@ export class DashboardComponent implements OnInit {
         { id: 'contact_info', label: 'Datos de contacto', icon: '📋', open: true, saving: false, saved: false, error: '', fields: [
             { key: 'contact_email',    label: 'Email',           type: 'email' },
             { key: 'contact_phone',    label: 'Teléfono visible' },
-            { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos: 573205554295' },
+            { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos: 573217733352' },
             { key: 'contact_address',  label: 'Dirección' },
             { key: 'contact_city',     label: 'Ciudad / País' },
             { key: 'contact_schedule', label: 'Horario de atención' },

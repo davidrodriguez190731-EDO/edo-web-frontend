@@ -39,7 +39,7 @@ export class CmsAdminComponent implements OnInit {
       { key: 'site_tagline', label: 'Tagline / eslogan' },
       { key: 'contact_email',    label: 'Email de contacto', type: 'email' },
       { key: 'contact_phone',    label: 'Teléfono visible' },
-      { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos, ej: 573205554295' },
+      { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos, ej: 573217733352' },
       { key: 'contact_address',  label: 'Dirección' },
       { key: 'contact_city',     label: 'Ciudad / País' },
       { key: 'contact_schedule', label: 'Horario de atención' },
@@ -88,7 +88,7 @@ export class CmsAdminComponent implements OnInit {
     contact: [
       { key: 'contact_email',    label: 'Email de contacto', type: 'email' },
       { key: 'contact_phone',    label: 'Teléfono visible' },
-      { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos, ej: 573205554295' },
+      { key: 'contact_whatsapp', label: 'Número WhatsApp', hint: 'Solo dígitos, ej: 573217733352' },
       { key: 'contact_address',  label: 'Dirección' },
       { key: 'contact_city',     label: 'Ciudad / País' },
       { key: 'contact_schedule', label: 'Horario de atención' },

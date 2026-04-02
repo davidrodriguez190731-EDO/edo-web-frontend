@@ -36,8 +36,8 @@ export class ContactComponent implements OnInit {
 
   contactData = {
     email:    'contacto@edoingenieriadigital.com',
-    phone:    '+57 320 555 4295',
-    whatsapp: '573205554295',
+    phone:    '+57 321 773 3352',
+    whatsapp: '573217733352',
     address:  'Monter\u00eda, C\u00f3rdoba',
     city:     'Monter\u00eda, C\u00f3rdoba, Colombia',
     schedule: 'Lunes a viernes 8am - 6pm',

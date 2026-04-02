@@ -24,7 +24,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       short: 'Automatice sus procesos internos con software diseñado para su operación.',
       desc: 'Desarrollamos sistemas completos de gestión: mantenimiento, inventarios, recursos humanos, contratos. Cada módulo es diseñado tras un diagnóstico de su operación real.',
       features: ['Módulos a su medida', 'Roles y permisos', 'Reportes automáticos', 'Notificaciones', 'Dashboard en tiempo real', 'Soporte continuo'],
-      waLink: 'https://wa.me/573205554295?text=Hola%2C%20me%20interesa%20un%20sistema%20a%20la%20medida%20para%20mi%20empresa',
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20me%20interesa%20un%20sistema%20a%20la%20medida%20para%20mi%20empresa',
       color: '#1B4B8A',
     },
     {
@@ -33,7 +33,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       short: 'Presencia digital que convierte visitantes en clientes reales.',
       desc: 'Diseñamos y desarrollamos sitios web corporativos, portafolios y landing pages con enfoque en conversión. Rápidos, seguros y optimizados para buscadores.',
       features: ['Diseño único', 'SEO básico incluido', 'Panel de administración', 'Formularios de contacto', 'Optimizado para móvil', 'Dominio y hosting'],
-      waLink: 'https://wa.me/573205554295?text=Hola%2C%20quiero%20una%20p%C3%A1gina%20web%20profesional%20para%20mi%20negocio',
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20quiero%20una%20p%C3%A1gina%20web%20profesional%20para%20mi%20negocio',
       color: '#0F2E5A',
     },
     {
@@ -42,7 +42,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       short: 'Sus empleados trabajan en campo sin internet. Sin app stores.',
       desc: 'Aplicaciones web progresivas que funcionan offline en el celular. Sus técnicos pueden registrar información en campo sin conexión y sincronizar al volver a la red.',
       features: ['Funciona sin internet', 'Instala desde el navegador', 'Fotos y GPS', 'Sincronización automática', 'Sin app stores', 'Compatible Android e iOS'],
-      waLink: 'https://wa.me/573205554295?text=Hola%2C%20necesito%20una%20app%20para%20que%20mis%20empleados%20puedan%20trabajar%20en%20campo%20sin%20internet',
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20necesito%20una%20app%20para%20que%20mis%20empleados%20puedan%20trabajar%20en%20campo%20sin%20internet',
       color: '#7C3AED',
     },
     {
@@ -51,7 +51,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
       short: 'Control total de su equipo, procesos y datos desde cualquier lugar.',
       desc: 'Plataformas web completas para gestionar equipos, proyectos, clientes o inventarios. Acceso por roles, reportes en PDF y exportación a Excel.',
       features: ['Acceso multi-usuario', 'Reportes en PDF', 'Exportación Excel', 'Filtros avanzados', 'Auditoría de cambios', 'API disponible'],
-      waLink: 'https://wa.me/573205554295?text=Hola%2C%20necesito%20una%20aplicaci%C3%B3n%20web%20para%20gestionar%20mi%20equipo%20y%20procesos',
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20necesito%20una%20aplicaci%C3%B3n%20web%20para%20gestionar%20mi%20equipo%20y%20procesos',
       color: '#E87722',
     },
   ];

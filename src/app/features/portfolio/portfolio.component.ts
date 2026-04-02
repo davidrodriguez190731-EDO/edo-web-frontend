@@ -122,7 +122,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   waProject(p: any) {
     const msg = `Hola, vi el proyecto "${p.name}" en su portafolio y me interesa algo similar para mi empresa. ¿Podemos hablar?`;
-    return `https://wa.me/573205554295?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/573217733352?text=${encodeURIComponent(msg)}`;
   }
 
   @HostListener('document:keydown.escape')
