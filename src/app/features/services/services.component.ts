@@ -19,50 +19,78 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
   readonly services = [
     {
-      num: '01', icon: '⚙️',
-      name: 'Sistemas a la Medida',
-      short: 'Automatice sus procesos internos con software diseñado para su operación.',
-      desc: 'Desarrollamos sistemas completos de gestión: mantenimiento, inventarios, recursos humanos, contratos. Cada módulo es diseñado tras un diagnóstico de su operación real.',
-      features: ['Módulos a su medida', 'Roles y permisos', 'Reportes automáticos', 'Notificaciones', 'Dashboard en tiempo real', 'Soporte continuo'],
-      waLink: 'https://wa.me/573217733352?text=Hola%2C%20me%20interesa%20un%20sistema%20a%20la%20medida%20para%20mi%20empresa',
+      num: '01', icon: 'app',
+      name: 'Aplicaciones a la medida',
+      short: 'Software construido para su operación, no adaptado de una plantilla.',
+      desc: 'Partimos de cómo trabaja su negocio hoy y construimos el sistema alrededor de ese proceso. Sin módulos que sobran, sin forzar su forma de trabajar para que encaje en un programa genérico. Se entrega funcionando, con sus datos adentro.',
+      features: [
+        'Diseñado sobre su proceso real, no sobre un molde',
+        'Se usa desde el computador o el celular, sin instalar nada',
+        'Accesos y permisos por cargo',
+        'Crece con el negocio: se agregan módulos después',
+        'Se conecta con otros sistemas cuando se necesita',
+        'Acompañamiento después de la entrega',
+      ],
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20necesito%20una%20aplicaci%C3%B3n%20a%20la%20medida%20para%20mi%20negocio',
       color: '#1B4B8A',
     },
     {
-      num: '02', icon: '🌐',
-      name: 'Páginas Web Profesionales',
-      short: 'Presencia digital que convierte visitantes en clientes reales.',
-      desc: 'Diseñamos y desarrollamos sitios web corporativos, portafolios y landing pages con enfoque en conversión. Rápidos, seguros y optimizados para buscadores.',
-      features: ['Diseño único', 'SEO básico incluido', 'Panel de administración', 'Formularios de contacto', 'Optimizado para móvil', 'Dominio y hosting'],
-      waLink: 'https://wa.me/573217733352?text=Hola%2C%20quiero%20una%20p%C3%A1gina%20web%20profesional%20para%20mi%20negocio',
+      num: '02', icon: 'control',
+      name: 'Sistemas de gestión y control',
+      short: 'Agenda, inventario, costos, cartera y personal en un solo lugar.',
+      desc: 'Lo que hoy está repartido entre cuadernos, hojas de cálculo y la memoria de alguien queda en un sistema con la información al día. Cada quien ve lo que le corresponde y usted ve el panorama completo, sin pedirle un reporte a nadie.',
+      features: [
+        'Toda la operación en una sola fuente de información',
+        'Indicadores del negocio al día, sin consolidar a mano',
+        'Historial de cada cliente, producto u obra',
+        'Control de lo que entra y lo que sale',
+        'Consultas y exportación a Excel cuando lo necesite',
+        'Registro de quién hizo cada cambio, según el sistema',
+      ],
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20quiero%20un%20sistema%20de%20gesti%C3%B3n%20para%20controlar%20mi%20operaci%C3%B3n',
       color: '#0F2E5A',
     },
     {
-      num: '03', icon: '📱',
-      name: 'Apps Móviles PWA',
-      short: 'Sus empleados trabajan en campo sin internet. Sin app stores.',
-      desc: 'Aplicaciones web progresivas que funcionan offline en el celular. Sus técnicos pueden registrar información en campo sin conexión y sincronizar al volver a la red.',
-      features: ['Funciona sin internet', 'Instala desde el navegador', 'Fotos y GPS', 'Sincronización automática', 'Sin app stores', 'Compatible Android e iOS'],
-      waLink: 'https://wa.me/573217733352?text=Hola%2C%20necesito%20una%20app%20para%20que%20mis%20empleados%20puedan%20trabajar%20en%20campo%20sin%20internet',
-      color: '#7C3AED',
+      num: '03', icon: 'web',
+      name: 'Páginas web',
+      short: 'Que lo encuentren, entiendan qué hace y le escriban.',
+      desc: 'Sitios corporativos y de producto que usted mismo administra: cambia textos, fotos y contenidos sin depender de nadie. Preparados para aparecer en buscadores y para que el visitante termine escribiéndole.',
+      features: [
+        'Diseño propio, no una plantilla repetida',
+        'Panel para editar contenidos usted mismo',
+        'Preparada para buscadores desde el primer día',
+        'Se ve bien en celular, que es por donde llega la mayoría',
+        'Formulario y WhatsApp integrados',
+        'Dominio y alojamiento según el plan',
+      ],
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20quiero%20una%20p%C3%A1gina%20web%20para%20mi%20empresa',
+      color: '#00A3C4',
     },
     {
-      num: '04', icon: '📊',
-      name: 'Apps Web de Gestión',
-      short: 'Control total de su equipo, procesos y datos desde cualquier lugar.',
-      desc: 'Plataformas web completas para gestionar equipos, proyectos, clientes o inventarios. Acceso por roles, reportes en PDF y exportación a Excel.',
-      features: ['Acceso multi-usuario', 'Reportes en PDF', 'Exportación Excel', 'Filtros avanzados', 'Auditoría de cambios', 'API disponible'],
-      waLink: 'https://wa.me/573217733352?text=Hola%2C%20necesito%20una%20aplicaci%C3%B3n%20web%20para%20gestionar%20mi%20equipo%20y%20procesos',
+      num: '04', icon: 'auto',
+      name: 'Automatización de procesos',
+      short: 'Lo repetitivo deja de hacerse a mano.',
+      desc: 'Todo lo que alguien rehace cada semana: armar informes, generar documentos, calcular liquidaciones, cruzar archivos, recordar citas. El sistema lo hace solo, en segundos y sin equivocarse. Es donde el ahorro se nota más rápido.',
+      features: [
+        'Informes y documentos generados solos, listos para enviar',
+        'Cálculos que se rehacen a mano cada mes, automáticos',
+        'Recordatorios y avisos sin que nadie los mande',
+        'Cruce de archivos y conciliaciones sin digitar',
+        'Atención automatizada por WhatsApp con inteligencia artificial',
+        'Se integra con lo que ya usa el negocio',
+      ],
+      waLink: 'https://wa.me/573217733352?text=Hola%2C%20quiero%20automatizar%20procesos%20repetitivos%20en%20mi%20empresa',
       color: '#E87722',
     },
   ];
 
   readonly whyEdo = [
-    { icon: '🎯', title: 'Diagnóstico primero', desc: 'Antes de escribir una línea de código entendemos su problema real. No vendemos soluciones genéricas.' },
-    { icon: '⚡', title: 'Entrega en producción', desc: 'Cada proyecto se entrega funcionando, desplegado y con datos reales. No prototipos ni demos.' },
-    { icon: '🔧', title: 'Soporte continuo', desc: 'Acompañamos el sistema después del lanzamiento. Sus procesos evolucionan y el sistema también.' },
-    { icon: '🇨🇴', title: 'Conocemos Colombia', desc: 'Entendemos el contexto empresarial colombiano: DIAN, normativas locales y necesidades reales.' },
-    { icon: '💰', title: 'Precio justo', desc: 'Soluciones de calidad enterprise a precios accesibles para empresas medianas y pequeñas.' },
-    { icon: '📈', title: 'Resultados medibles', desc: 'Definimos indicadores de éxito antes de empezar y los medimos con usted al finalizar.' },
+    { icon: 'target', title: 'Primero entender, después construir', desc: 'Antes de escribir una línea de código revisamos cómo trabaja hoy. La mayoría de los sistemas fallan por resolver el problema equivocado.' },
+    { icon: 'rocket', title: 'Se entrega funcionando', desc: 'Cada proyecto se entrega en producción, con datos reales y gente usándolo. No prototipos ni demostraciones.' },
+    { icon: 'wrench', title: 'Acompañamiento después', desc: 'El negocio cambia y el sistema tiene que cambiar con él. Seguimos ahí después del lanzamiento.' },
+    { icon: 'flag', title: 'Conocemos el contexto local', desc: 'Facturación, DIAN, normativa y la forma real en que opera una empresa colombiana.' },
+    { icon: 'chat', title: 'Se habla claro', desc: 'Sin jerga técnica ni promesas que no se sostienen. Si algo no se puede hacer, se dice.' },
+    { icon: 'shield', title: 'Su información es suya', desc: 'Cada negocio con sus datos separados, accesos por cargo y respaldos. Usted es el dueño de su información.' },
   ];
 
   ngOnInit() {
@@ -73,7 +101,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
       delay: Math.random() * 4,
       duration: Math.random() * 6 + 5,
     }));
-    this.startHeroCarousel();
   }
 
   ngOnDestroy() {
@@ -89,13 +116,11 @@ export class ServicesComponent implements OnInit, OnDestroy {
   prevHeroCard() {
     clearInterval(this.heroTimer);
     this.heroCardIndex = (this.heroCardIndex - 1 + this.services.length) % this.services.length;
-    this.startHeroCarousel();
   }
 
   nextHeroCard() {
     clearInterval(this.heroTimer);
     this.heroCardIndex = (this.heroCardIndex + 1) % this.services.length;
-    this.startHeroCarousel();
   }
 
   toggle(i: number) {
