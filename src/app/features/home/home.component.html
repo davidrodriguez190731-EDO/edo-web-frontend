@@ -171,11 +171,12 @@
 <!-- ══════ ¿CÓMO AYUDAMOS? ══════ -->
 <section class="section bg-white">
   <div class="container">
-    <div class="section-header text-center">
+    <div class="svc-header">
       <h2 class="section-title-dark">¿Cómo le ayudamos?</h2>
+      <a routerLink="/servicios" class="svc-header-link">Ver servicios en detalle →</a>
     </div>
     <div class="services-grid">
-      <div *ngFor="let s of services" class="service-card-light">
+      <a *ngFor="let s of services; let i = index" routerLink="/servicios" class="service-card-light">
         <div class="scl-icon-wrapper">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                stroke="currentColor" stroke-width="1.6"
@@ -197,10 +198,10 @@
             </g>
           </svg>
         </div>
+        <div class="scl-num">0{{ i + 1 }}</div>
         <h3>{{ s.name }}</h3>
         <p>{{ s.desc }}</p>
-        <a routerLink="/servicios" class="scl-link">Más info →</a>
-      </div>
+      </a>
     </div>
   </div>
 </section>

@@ -197,33 +197,51 @@
 }
 
 /* ══ SERVICES ══════════════════════════════════════════════════ */
+/* Cuatro servicios en cuatro columnas. Antes eran tres columnas con
+   cuatro tarjetas: la cuarta quedaba sola abajo con media pantalla vacia
+   al lado. Las tarjetas eran altas, centradas y con mucho aire; la
+   seccion se veia plana. Ahora son compactas, alineadas a la izquierda y
+   toda la tarjeta es el enlace. */
 .services-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
 }
+
+.svc-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 32px;
+}
+
+.svc-header-link {
+  font-size: 13px; font-weight: 700; color: #1B4B8A; text-decoration: none;
+  white-space: nowrap;
+}
+.svc-header-link:hover { color: #E87722; }
 
 .service-card-light {
-  background: #fff; border: 1px solid #E2E8F0;
-  border-radius: 16px; padding: 32px 24px;
-  text-align: center; display: flex;
-  flex-direction: column; align-items: center; gap: 12px;
-  transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  &:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(15,46,90,0.12); border-color: #E87722; }
+  position: relative; overflow: hidden;
+  background: #fff; border: 1px solid #E8EEF6;
+  border-radius: 14px; padding: 24px 22px 26px;
+  text-align: left; display: flex; flex-direction: column;
+  align-items: flex-start; gap: 0;
+  text-decoration: none;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+
+  &::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: #E87722; transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(15,46,90,0.11);
+    border-color: #D8E4F2;
+  }
+  &:hover::before { transform: scaleX(1); }
 }
 
-.scl-icon-wrapper {
-  width: 72px; height: 72px; background: #F0F7FF;
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-}
-.scl-icon { font-size: 32px; }
-
-.service-card-light h3 { font-size: 17px; font-weight: 800; color: #0F2E5A; margin: 0; }
-.service-card-light p  { font-size: 13px; color: #64748B; line-height: 1.65; flex: 1; margin: 0; }
-
-.scl-link {
-  font-size: 13px; font-weight: 700; color: #1B4B8A;
-  text-decoration: none; border: 1px solid #CBD5E0;
-  border-radius: 8px; padding: 7px 18px; transition: all 0.2s;
-  &:hover { background: #0F2E5A; color: #fff; border-color: #0F2E5A; }
+.scl-num {
+  font-size: 11px; font-weight: 900; color: #CBD5E1;
+  letter-spacing: 1.5px; margin-bottom: 10px;
 }
 
 /* ══ PROJECTS ══════════════════════════════════════════════════ */
@@ -407,9 +425,9 @@
 // ══ Iconos SVG de servicios y CTA sin formulario ═════════════
 .scl-icon-wrapper {
   display: flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: 12px;
+  width: 42px; height: 42px; border-radius: 11px;
   background: rgba(27,75,138,0.09); color: #1B4B8A;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   svg { display: block; }
 }
 
