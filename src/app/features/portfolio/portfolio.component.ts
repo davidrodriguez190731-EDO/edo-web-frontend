@@ -70,8 +70,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
         this.categories = ['Todos', ...cats];
         this.filtered   = [...this.projects];
         // Recopilar imágenes de todos los proyectos para el carrusel hero
-        this.carouselImages = this.projects.flatMap(p => p.images || []);
-        if (this.carouselImages.length > 1) this.startCarousel();
+
         this.loading = false;
       },
       error: () => { this.error = true; this.loading = false; }
@@ -112,6 +111,22 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   prevModalImg() {
     if (!this.selected?.images?.length) return;
     this.modalImgIndex = (this.modalImgIndex - 1 + this.selected.images.length) % this.selected.images.length;
+  }
+
+  /** Cifras del encabezado: se calculan de los proyectos cargados,
+   *  asi que se actualizan solas al agregar uno desde el panel. */
+  get statTotal(): number {
+    return this.projects.length;
+  }
+
+  get statEnProduccion(): number {
+    if (!this.projects.length) return 0;
+    const enProd = this.projects.filter(p => p.status === 'En producción').length;
+    return Math.round((enProd / this.projects.length) * 100);
+  }
+
+  get statSectores(): number {
+    return new Set(this.projects.map(p => p.category).filter(Boolean)).size;
   }
 
   setModalImg(i: number) {

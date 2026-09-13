@@ -1,60 +1,31 @@
-<!-- ══ HERO DIVIDIDO ══ -->
-<section class="portfolio-hero">
-  <div class="hero-bg-dots"></div>
-
-  <div class="hero-split">
-
-    <!-- Izquierda: texto + watermark -->
-    <div class="hero-left">
-      <div class="hero-watermark">
-        <img src="assets/logo.webp" alt="">
+<!-- ══ HERO COMPACTO ══
+     Antes esta pagina abria con un hero de pantalla completa y un
+     carrusel. Quien entra a "Proyectos" ya sabe que viene a ver, asi que
+     ese bloque solo agregaba un scroll antes del catalogo. Ademas el
+     carrusel mostraba la landing de otro producto, con su propio menu y
+     su boton de "Prueba gratis", y parecian dos sitios encimados.
+     ══ -->
+<section class="pfh">
+  <div class="container pfh-inner">
+    <div class="pfh-text">
+      <div class="pfh-tag"><span class="dot-live"></span> Portafolio</div>
+      <h1 class="pfh-title">Soluciones en producción</h1>
+      <p class="pfh-sub">Software a la medida que hoy opera negocios reales, todos los días.</p>
+    </div>
+    <div class="pfh-stats" *ngIf="!loading">
+      <div class="pfh-stat">
+        <div class="pfh-num">{{ statTotal }}</div>
+        <div class="pfh-label">{{ statTotal === 1 ? 'Solución' : 'Soluciones' }}</div>
       </div>
-      <div class="hero-content">
-        <div class="hero-tag">
-          <span class="dot-live"></span> Casos de éxito
-        </div>
-        <h1>Soluciones que<br><span class="accent">digitalizan<br>su operación</span></h1>
-        <p>No vendemos software genérico. Analizamos su operación y construimos la herramienta exacta que su empresa necesita.</p>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-num">{{ projects.length }}+</div>
-            <div class="stat-label">Soluciones</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">100%</div>
-            <div class="stat-label">En producción</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">60d</div>
-            <div class="stat-label">Tiempo promedio</div>
-          </div>
-        </div>
+      <div class="pfh-stat">
+        <div class="pfh-num">{{ statEnProduccion }}%</div>
+        <div class="pfh-label">En producción</div>
+      </div>
+      <div class="pfh-stat">
+        <div class="pfh-num">{{ statSectores }}</div>
+        <div class="pfh-label">{{ statSectores === 1 ? 'Sector' : 'Sectores' }}</div>
       </div>
     </div>
-
-    <!-- Derecha: carrusel de screenshots -->
-    <div class="hero-carousel" *ngIf="carouselImages.length > 0">
-      <div class="carousel-track" [style.transform]="'translateX(-' + (carouselIndex * 100) + '%)'">
-        <div *ngFor="let img of carouselImages" class="carousel-slide">
-          <img [src]="imgUrl(img)" alt="Screenshot proyecto" loading="lazy">
-        </div>
-      </div>
-      <div class="carousel-dots" *ngIf="carouselImages.length > 1">
-        <span *ngFor="let img of carouselImages; let i = index"
-              class="cdot" [class.active]="carouselIndex === i"
-              (click)="carouselIndex = i"></span>
-      </div>
-      <div class="carousel-overlay"></div>
-    </div>
-
-    <!-- Placeholder si no hay imágenes aún -->
-    <div class="hero-carousel hero-placeholder" *ngIf="carouselImages.length === 0 && !loading">
-      <div class="placeholder-inner">
-        <div class="placeholder-icon">🖼️</div>
-        <p>Agrega screenshots desde el panel admin</p>
-      </div>
-    </div>
-
   </div>
 </section>
 
