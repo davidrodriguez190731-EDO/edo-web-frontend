@@ -115,9 +115,9 @@ import { environment } from '../../../../environments/environment';
 :host { display: contents; }
 
 .modal-backdrop {
-  /* Por encima del boton flotante de WhatsApp, que se montaba sobre el
-     modal y tapaba la galeria y los botones. */
-  position: fixed; inset: 0; z-index: 3000;
+  /* Por encima del boton flotante de WhatsApp, que tiene z-index 9999 y
+     se montaba sobre el modal tapando la galeria y los botones. */
+  position: fixed; inset: 0; z-index: 10000;
   background: rgba(10,22,40,0.82); backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
