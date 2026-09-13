@@ -1,77 +1,17 @@
-<!-- ══ HERO SPLIT ══ -->
-<section class="about-hero">
-  <div class="hero-bg-dots"></div>
-  <div class="particles">
-    <span *ngFor="let p of particles" class="particle"
-      [style.left.%]="p.x" [style.top.%]="p.y"
-      [style.width.px]="p.size" [style.height.px]="p.size"
-      [style.animation-delay.s]="p.delay"
-      [style.animation-duration.s]="p.duration">
-    </span>
-  </div>
-
-  <div class="hero-split">
-
-    <!-- Izquierda -->
-    <div class="hero-left">
-      <div class="hero-watermark">
-        <img src="assets/logo.webp" alt="">
-      </div>
-      <div class="hero-content">
-        <div class="hero-tag">
-          <span class="dot-live"></span> Quiénes somos
-        </div>
-        <h1>Ingenieros que<br><span class="accent">entienden su<br>negocio</span></h1>
-        <p>No somos una agencia de diseño ni una fábrica de software. Somos un equipo técnico que se sienta con usted, entiende su operación y construye la solución exacta que necesita.</p>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-num">{{ stats.projects }}+</div>
-            <div class="stat-label">Proyectos</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">{{ stats.years }}+</div>
-            <div class="stat-label">Años exp.</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">100%</div>
-            <div class="stat-label">En producción</div>
-          </div>
-        </div>
-      </div>
+<!-- ══ ENCABEZADO ══
+     Antes: hero de pantalla completa con particulas, marca de agua y un
+     carrusel vertical de valores, el mismo patron ya retirado del resto
+     del sitio. Las cifras estaban escritas a mano y se contradecian con
+     el portafolio.
+     ══ -->
+<section class="abh">
+  <div class="container abh-inner">
+    <h1 class="abh-title">Nosotros</h1>
+    <div class="abh-stats" *ngIf="projects.length">
+      <div class="abh-stat"><span class="abh-num">{{ totalProyectos }}</span><span class="abh-label">soluciones</span></div>
+      <div class="abh-stat"><span class="abh-num">{{ sectores }}</span><span class="abh-label">sectores</span></div>
+      <div class="abh-stat"><span class="abh-num">{{ anios }}</span><span class="abh-label">años construyendo</span></div>
     </div>
-
-    <!-- Derecha: tarjeta de perfil + valores rotando -->
-    <div class="hero-right">
-      <div class="profile-card">
-        <img src="assets/logo.webp" alt="EDO" class="profile-avatar-img">
-        <div class="profile-info">
-          <div class="profile-name">EDO Ingeniería Digital</div>
-          <div class="profile-role">Desarrollo de Software · Montería, Colombia</div>
-        </div>
-        <div class="profile-badge">
-          <span class="bdot"></span> Disponible
-        </div>
-      </div>
-
-      <div class="values-track">
-        <div class="values-slider" [style.transform]="'translateY(-' + (valueIndex * 130) + 'px)'">
-          <div *ngFor="let v of values" class="value-slide">
-            <div class="value-icon">{{ v.icon }}</div>
-            <div class="value-text">
-              <div class="value-title">{{ v.title }}</div>
-              <div class="value-desc">{{ v.desc }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="value-dots">
-        <span *ngFor="let v of values; let i = index"
-              class="vdot" [class.active]="valueIndex === i"
-              (click)="valueIndex = i"></span>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -80,14 +20,15 @@
   <div class="container">
     <div class="section-split">
       <div class="split-text">
-        <div class="section-tag">Nuestra historia</div>
+        <div class="section-tag">Qué es EDO</div>
         <h2 class="section-title-dark">De la ingeniería<br>al software</h2>
-        <p>EDO Ingeniería Digital nació de la frustración de ver empresas colombianas perdiendo tiempo y dinero con procesos manuales, hojas de cálculo y WhatsApp como sistema de gestión.</p>
-        <p>Con formación en ingeniería y años de experiencia en el sector construcción y mantenimiento industrial, desarrollamos nuestra primera solución para gestionar órdenes de trabajo. Hoy ese sistema está en producción y sigue creciendo.</p>
-        <p>Cada proyecto nuevo refuerza nuestra convicción: la tecnología debe adaptarse al negocio, no al revés.</p>
+        <p>EDO Ingeniería Digital construye software de gestión para empresas que hoy operan con hojas de cálculo, cuadernos y grupos de WhatsApp.</p>
+        <p>Nace desde la ingeniería, no desde el diseño web: la primera solución salió de la necesidad real de controlar órdenes de trabajo en mantenimiento industrial. Ese sistema sigue en producción y sigue creciendo.</p>
+        <p>El criterio no ha cambiado desde entonces: el software se adapta al negocio, no al revés. Y quien atiende al cliente es quien construye el sistema.</p>
+        <a routerLink="/portafolio" class="hist-link">Ver los sistemas en producción →</a>
       </div>
       <div class="split-timeline">
-        <div *ngFor="let t of timeline; let i = index" class="timeline-item">
+        <div *ngFor="let t of timeline" class="timeline-item">
           <div class="tl-year">{{ t.year }}</div>
           <div class="tl-dot"></div>
           <div class="tl-content">
@@ -100,25 +41,6 @@
   </div>
 </section>
 
-
-
-<!-- ══ VALORES ══ -->
-<section class="section bg-white">
-  <div class="container">
-    <div class="section-header text-center">
-      <div class="section-tag center">Cómo trabajamos</div>
-      <h2 class="section-title-dark">Principios que guían<br>cada proyecto</h2>
-    </div>
-    <div class="values-grid">
-      <div *ngFor="let v of values" class="value-card">
-        <div class="vc-icon">{{ v.icon }}</div>
-        <h3>{{ v.title }}</h3>
-        <p>{{ v.desc }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══ CTA ══ -->
 <section class="cta-section">
   <div class="container text-center">
@@ -126,7 +48,7 @@
     <p class="cta-desc">Sin compromiso. Le damos un diagnóstico honesto de si podemos ayudarle y cómo.</p>
     <div class="cta-btns">
       <a href="https://wa.me/573217733352?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20nosotros%20y%20quiero%20hablar%20sobre%20mi%20proyecto" target="_blank" class="btn-wa">
-        💬 Escribirnos por WhatsApp
+        Escribir por WhatsApp
       </a>
       <a routerLink="/servicios" class="btn-ghost">Ver servicios</a>
     </div>
