@@ -490,3 +490,21 @@
     .search-wrap { flex: 1 1 auto; }
   }
 }
+
+// ══ Filtros en movil: una fila deslizable ════════════════════
+// Con nueve categorias, las pastillas ocupaban seis filas antes del
+// primer proyecto. En una sola fila con desplazamiento lateral, el
+// catalogo queda a la vista.
+@media (max-width: 860px) {
+  .toolbar .filter-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .toolbar .filter-tabs::-webkit-scrollbar { display: none; }
+  .toolbar .ftab { flex: 0 0 auto; white-space: nowrap; }
+}

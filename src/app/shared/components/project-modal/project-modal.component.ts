@@ -115,7 +115,9 @@ import { environment } from '../../../../environments/environment';
 :host { display: contents; }
 
 .modal-backdrop {
-  position: fixed; inset: 0; z-index: 1000;
+  /* Por encima del boton flotante de WhatsApp, que se montaba sobre el
+     modal y tapaba la galeria y los botones. */
+  position: fixed; inset: 0; z-index: 3000;
   background: rgba(10,22,40,0.82); backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
@@ -290,13 +292,19 @@ import { environment } from '../../../../environments/environment';
 
 @media (max-width: 860px) {
   .modal-backdrop { padding: 12px; }
-  .modal { grid-template-columns: 1fr; grid-template-rows: auto 1fr; max-height: 92vh; }
+  .modal { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); max-height: 92vh; }
   .modal-left { max-height: none; border-radius: 22px 22px 0 0; }
-  .modal-right { max-height: none; }
-  .modal-body { padding: 22px 20px 18px; }
+  /* min-height: 0 es lo que permite que el cuerpo haga scroll dentro del
+     modal. Sin eso la columna crece con el contenido y el pie con los
+     botones queda fuera de la pantalla, imposible de alcanzar. */
+  .modal-right { max-height: none; min-height: 0; overflow: hidden; }
+  .modal-body { padding: 22px 20px 18px; min-height: 0; }
   .modal-title { font-size: 21px; }
   .mgallery-thumbs { display: none; }
-  .modal-cta-sticky { flex-wrap: wrap; padding: 12px 16px 16px; }
+  .modal-cta-sticky { padding: 12px 14px 14px; gap: 8px; }
+  .modal-cta-sticky .btn-cta-primary,
+  .modal-cta-sticky .btn-cta-wa { font-size: 12.5px; padding: 12px 8px; gap: 6px; }
+  .modal-cta-sticky .btn-cta-secondary { display: none; }
 }
 `],
 })
