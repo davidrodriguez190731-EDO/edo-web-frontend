@@ -7,23 +7,19 @@
      ══ -->
 <section class="pfh">
   <div class="container pfh-inner">
-    <div class="pfh-text">
-      <div class="pfh-tag"><span class="dot-live"></span> Portafolio</div>
-      <h1 class="pfh-title">Soluciones en producción</h1>
-      <p class="pfh-sub">Software a la medida que hoy opera negocios reales, todos los días.</p>
-    </div>
+    <h1 class="pfh-title">Proyectos</h1>
     <div class="pfh-stats" *ngIf="!loading">
       <div class="pfh-stat">
-        <div class="pfh-num">{{ statTotal }}</div>
-        <div class="pfh-label">{{ statTotal === 1 ? 'Solución' : 'Soluciones' }}</div>
+        <span class="pfh-num">{{ statTotal }}</span>
+        <span class="pfh-label">{{ statTotal === 1 ? 'solución' : 'soluciones' }}</span>
       </div>
       <div class="pfh-stat">
-        <div class="pfh-num">{{ statEnProduccion }}%</div>
-        <div class="pfh-label">En producción</div>
+        <span class="pfh-num">{{ statEnProduccion }}%</span>
+        <span class="pfh-label">en producción</span>
       </div>
       <div class="pfh-stat">
-        <div class="pfh-num">{{ statSectores }}</div>
-        <div class="pfh-label">{{ statSectores === 1 ? 'Sector' : 'Sectores' }}</div>
+        <span class="pfh-num">{{ statSectores }}</span>
+        <span class="pfh-label">{{ statSectores === 1 ? 'sector' : 'sectores' }}</span>
       </div>
     </div>
   </div>
@@ -49,7 +45,8 @@
 
             <!-- Buscador + Filtro -->
       <!-- Buscador -->
-      <div class="search-wrap" style="margin-bottom:16px">
+      <div class="toolbar">
+      <div class="search-wrap">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
@@ -58,13 +55,14 @@
           <button class="search-clear" *ngIf="searchQuery" (click)="clearSearch()">✕</button>
         </div>
       <!-- Tabs categoría -->
-      <div class="filter-tabs" style="margin-bottom:28px">
+      <div class="filter-tabs">
         <button *ngFor="let c of categories"
                 class="ftab"
                 [class.active]="activeCategory === c"
                 (click)="setCategory(c)">
           {{ c }} <span class="ftab-count">{{ countFor(c) }}</span>
         </button>
+      </div>
       </div>
       <div class="search-results-info" *ngIf="searchQuery">
         {{ filtered.length }} resultado{{ filtered.length !== 1 ? 's' : '' }} para "<strong>{{ searchQuery }}</strong>"
