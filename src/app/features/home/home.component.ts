@@ -44,10 +44,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @ViewChild('sliderWrapper') sliderWrapper!: ElementRef<HTMLDivElement>;
 
+  /* Los mismos cuatro de la pagina de Servicios. Antes eran tres, con
+     otros nombres, y uno de ellos publicaba el stack tecnico. */
   services = [
-    { icon: '🖥️', name: 'Sistemas a la Medida',           desc: 'Software completo para su operación: mantenimiento, facturación, RRHH, inventarios. Angular + Flask + PostgreSQL.' },
-    { icon: '🌐', name: 'Páginas Web Profesionales',       desc: 'Sitios rápidos, responsivos y optimizados. Mejore su presencia online, atraiga clientes y venda más.' },
-    { icon: '⚡', name: 'Soluciones Digitales',            desc: 'Automatización de procesos, integraciones, dashboards y consultoría para transformar su empresa.' },
+    { icon: 'app',     name: 'Aplicaciones a la medida',      desc: 'Software construido para su operación, no adaptado de una plantilla.' },
+    { icon: 'control', name: 'Sistemas de gestión y control', desc: 'Agenda, inventario, costos, cartera y personal en un solo lugar.' },
+    { icon: 'web',     name: 'Páginas web',                   desc: 'Que lo encuentren, entiendan qué hace y le escriban.' },
+    { icon: 'auto',    name: 'Automatización de procesos',    desc: 'Informes, documentos y tareas repetitivas que el sistema hace solo.' },
   ];
 
   process = [

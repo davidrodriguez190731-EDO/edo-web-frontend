@@ -52,10 +52,19 @@ h1, h2, h3, h4 {
 }
 
 /* ── Utilidades ─────────────────────────────────────────── */
+/* Ancho unico de contenido para todo el sitio.
+   Antes limitaba a 1140px y el portafolio se saltaba la regla con su
+   propia copia; el sitio quedaba con dos anchos distintos. */
 .container {
-  max-width: 1140px;
+  width: 100%;
+  max-width: 100%;   /* ancho unico */
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
 }
 
 .section-label {
