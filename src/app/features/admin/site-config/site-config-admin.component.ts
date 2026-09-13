@@ -232,6 +232,13 @@ import { environment } from '../../../../environments/environment';
   `],
 })
 export class SiteConfigAdminComponent implements OnInit {
+  /** Cloudinary devuelve URL absoluta; las imagenes antiguas son rutas del backend. */
+  imgUrl(v: string): string {
+    if (!v) return '';
+    if (v.startsWith('data:') || v.startsWith('http')) return v;
+    return environment.apiUrl.replace('/api', '') + v;
+  }
+
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
 
@@ -259,8 +266,8 @@ export class SiteConfigAdminComponent implements OnInit {
   loadCurrentImages() {
     this.http.get<any>(`${this.apiUrl}/site-config/`).subscribe({
       next: cfg => {
-        if (cfg.hero_chaos_image) this.chaosPreview = this.apiUrl.replace('/api', '') + cfg.hero_chaos_image;
-        if (cfg.hero_order_image) this.orderPreview = this.apiUrl.replace('/api', '') + cfg.hero_order_image;
+        if (cfg.hero_chaos_image) this.chaosPreview = this.imgUrl(cfg.hero_chaos_image);
+        if (cfg.hero_order_image) this.orderPreview = this.imgUrl(cfg.hero_order_image);
       }
     });
   }

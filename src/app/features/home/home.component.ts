@@ -16,6 +16,13 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  /** Cloudinary devuelve URL absoluta; las imagenes antiguas son rutas del backend. */
+  imgUrl(v: string): string {
+    if (!v) return '';
+    if (v.startsWith('data:') || v.startsWith('http')) return v;
+    return environment.apiUrl.replace('/api', '') + v;
+  }
+
   private api     = inject(ApiService);
   private http    = inject(HttpClient);
   private baseUrl = environment.apiUrl.replace('/api', '');
@@ -60,8 +67,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   loadSiteConfig() {
     this.http.get<any>(`${environment.apiUrl}/site-config/`).subscribe({
       next: cfg => {
-        if (cfg.hero_chaos_image) this.chaosImage = this.baseUrl + cfg.hero_chaos_image;
-        if (cfg.hero_order_image) this.orderImage = this.baseUrl + cfg.hero_order_image;
+        if (cfg.hero_chaos_image) this.chaosImage = this.imgUrl(cfg.hero_chaos_image);
+        if (cfg.hero_order_image) this.orderImage = this.imgUrl(cfg.hero_order_image);
       }
     });
   }

@@ -13,6 +13,13 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./portfolio.component.scss'],
 })
 export class PortfolioComponent implements OnInit, OnDestroy {
+  /** Cloudinary devuelve URL absoluta; las imagenes antiguas son rutas del backend. */
+  imgUrl(v: string): string {
+    if (!v) return '';
+    if (v.startsWith('data:') || v.startsWith('http')) return v;
+    return environment.apiUrl.replace('/api', '') + v;
+  }
+
 
   apiBase      = environment.apiUrl.replace('/api', '');
   projects: any[] = [];

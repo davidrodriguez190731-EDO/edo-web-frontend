@@ -36,7 +36,7 @@
     <div class="hero-carousel" *ngIf="carouselImages.length > 0">
       <div class="carousel-track" [style.transform]="'translateX(-' + (carouselIndex * 100) + '%)'">
         <div *ngFor="let img of carouselImages" class="carousel-slide">
-          <img [src]="apiBase + img" alt="Screenshot proyecto" loading="lazy">
+          <img [src]="imgUrl(img)" alt="Screenshot proyecto" loading="lazy">
         </div>
       </div>
       <div class="carousel-dots" *ngIf="carouselImages.length > 1">
@@ -114,7 +114,7 @@
 
           <!-- Imagen o color gradient -->
           <div class="pcard-visual">
-            <img *ngIf="p.images?.length" [src]="apiBase + p.images[0]" alt="{{ p.name }}" loading="lazy">
+            <img *ngIf="p.images?.length" [src]="imgUrl(p.images[0])" alt="{{ p.name }}" loading="lazy">
             <div *ngIf="!p.images?.length" class="pcard-visual-fallback"
                  [style.background]="'linear-gradient(135deg,' + p.color + '22 0%,' + p.color + '44 100%)'">
               <span class="pcard-icon">{{ getCategoryIcon(p.category) }}</span>
@@ -174,7 +174,7 @@
     <div class="modal-left">
       <div class="modal-gallery" *ngIf="selected.images?.length">
         <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
-          <img *ngFor="let img of selected.images" [src]="apiBase + img" alt="{{ selected.name }}">
+          <img *ngFor="let img of selected.images" [src]="imgUrl(img)" alt="{{ selected.name }}">
         </div>
         <div class="mgallery-nav" *ngIf="selected.images.length > 1">
           <button (click)="prevModalImg(); $event.stopPropagation()">&#8249;</button>

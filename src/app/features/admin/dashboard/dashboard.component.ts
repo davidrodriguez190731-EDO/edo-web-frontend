@@ -23,6 +23,13 @@ type ConfigMap = { [key: string]: string };
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  /** Cloudinary devuelve URL absoluta; las imagenes antiguas son rutas del backend. */
+  imgUrl(v: string): string {
+    if (!v) return '';
+    if (v.startsWith('data:') || v.startsWith('http')) return v;
+    return environment.apiUrl.replace('/api', '') + v;
+  }
+
   private auth = inject(AuthService);
   private router = inject(Router);
   private http = inject(HttpClient);
@@ -253,8 +260,8 @@ export class DashboardComponent implements OnInit {
       next: data => {
         this.config = data; this.draft = { ...data };
         const base = environment.apiUrl.replace('/api', '');
-        if (data['hero_chaos_image']) this.chaosPreview = base + data['hero_chaos_image'];
-        if (data['hero_order_image']) this.orderPreview = base + data['hero_order_image'];
+        if (data['hero_chaos_image']) this.chaosPreview = this.imgUrl(data['hero_chaos_image']);
+        if (data['hero_order_image']) this.orderPreview = this.imgUrl(data['hero_order_image']);
         this.loading = false; this.cdr.detectChanges();
       },
       error: () => { this.loading = false; }

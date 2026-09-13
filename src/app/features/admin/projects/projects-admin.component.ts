@@ -26,9 +26,20 @@ export class ProjectsAdminComponent implements OnInit {
   form: any = {};
   pendingImages: string[] = [];  // base64 nuevas aún no guardadas
 
-  readonly statusOptions = ['En producción', 'Activo', 'En desarrollo', 'Completado'];
+  readonly statusOptions = ['En producción', 'En desarrollo', 'Activo', 'Completado'];
+  readonly kindOptions = [
+    { value: 'producto', label: 'Producto propio (lo vendemos)' },
+    { value: 'caso',     label: 'Caso de éxito (software de un cliente)' },
+  ];
 
   ngOnInit() { this.load(); }
+
+  /** Las imágenes viejas son rutas relativas (/static/...); las de Cloudinary ya son absolutas. */
+  imgUrl(img: string): string {
+    if (!img) return '';
+    if (img.startsWith('data:') || img.startsWith('http')) return img;
+    return this.apiBase + img;
+  }
 
   load() {
     this.loading = true;
@@ -41,8 +52,9 @@ export class ProjectsAdminComponent implements OnInit {
   openCreate() {
     this.form = {
       name: '', category: '', status: 'En producción',
-      description: '', highlightsStr: '', color: '#1B4B8A',
-      featured: false, order: 99, visible: true, images: [],
+      description: '', highlightsStr: '', metricsStr: '',
+      kind: 'producto', stack: '', url_app: '', client: '', year: null,
+      color: '#1B4B8A', featured: false, order: 99, visible: true, images: [],
     };
     this.pendingImages = [];
     this.showModal = true;
@@ -52,6 +64,11 @@ export class ProjectsAdminComponent implements OnInit {
     this.form = {
       ...p,
       highlightsStr: Array.isArray(p.highlights) ? p.highlights.join('\n') : '',
+      metricsStr:    Array.isArray(p.metrics)    ? p.metrics.join('\n')    : '',
+      kind:  p.kind || 'producto',
+      stack: p.stack || '',
+      url_app: p.url_app || '',
+      client:  p.client  || '',
       images: [...(p.images || [])],
     };
     this.pendingImages = [];
@@ -78,17 +95,33 @@ export class ProjectsAdminComponent implements OnInit {
     this.form.images = this.form.images.filter((_: any, idx: number) => idx !== i);
   }
 
+  moveImage(i: number, dir: number) {
+    const arr = [...(this.form.images || [])];
+    const j = i + dir;
+    if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    this.form.images = arr;
+  }
+
   save() {
+    if (!this.form.name?.trim()) {
+      this.showToast('El nombre es obligatorio', 'danger'); return;
+    }
     this.saving = true;
     const token = localStorage.getItem('edo_token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
+    const toList = (s: string) =>
+      (s || '').split('\n').map(v => v.trim()).filter(Boolean);
+
     const payload = {
       ...this.form,
-      highlights: this.form.highlightsStr.split('\n').map((s: string) => s.trim()).filter(Boolean),
+      highlights: toList(this.form.highlightsStr),
+      metrics:    toList(this.form.metricsStr),
       images: this.form.images || [],
     };
     delete payload.highlightsStr;
+    delete payload.metricsStr;
 
     const url = this.form.id
       ? `${environment.apiUrl}/projects/${this.form.id}`
@@ -102,8 +135,12 @@ export class ProjectsAdminComponent implements OnInit {
         this.showToast('✓ Proyecto guardado');
         this.showModal = false; this.saving = false; this.load();
       },
-      error: () => {
-        this.showToast('Error al guardar', 'danger'); this.saving = false;
+      error: (err) => {
+        // El backend devuelve el motivo real (por ejemplo, Cloudinary sin
+        // configurar). Mostrarlo evita depurar a ciegas un "Error al guardar".
+        const msg = err?.error?.error || 'Error al guardar';
+        this.showToast(msg, 'danger');
+        this.saving = false;
       },
     });
   }
@@ -117,6 +154,6 @@ export class ProjectsAdminComponent implements OnInit {
 
   showToast(msg: string, type = 'success') {
     this.toast = msg; this.toastType = type;
-    setTimeout(() => this.toast = '', 3000);
+    setTimeout(() => this.toast = '', 5000);
   }
 }
