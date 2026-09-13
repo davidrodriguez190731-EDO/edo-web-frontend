@@ -218,6 +218,9 @@
 .svc-header-link:hover { color: #E87722; }
 
 .service-card-light {
+  /* Es un <a>: sin color explicito el navegador le aplica su azul de
+     enlace y, tras la primera visita, el morado de "visitado". */
+  color: inherit;
   position: relative; overflow: hidden;
   background: #fff; border: 1px solid #E8EEF6;
   border-radius: 14px; padding: 24px 22px 26px;
@@ -456,3 +459,24 @@
   transition: background 0.2s, border-color 0.2s;
   &:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.4); }
 }
+
+// ══ Texto de las tarjetas de servicio ════════════════════════
+// Estas dos reglas se habian perdido al recortar el bloque anterior, asi
+// que el titulo y la descripcion heredaban el color del enlace.
+.service-card-light h3,
+.service-card-light:visited h3,
+.service-card-light:hover h3 {
+  font-size: 16px; font-weight: 800; color: #0F2E5A;
+  margin: 0 0 8px; line-height: 1.3;
+}
+
+.service-card-light p,
+.service-card-light:visited p {
+  font-size: 13px; color: #64748B; line-height: 1.6; margin: 0;
+}
+
+// ══ Titulos de seccion alineados ═════════════════════════════
+// "¿Como le ayudamos?" quedaba a la izquierda y el siguiente centrado y
+// bastante mas grande. Se igualan.
+.section-header.text-center { text-align: left; margin-bottom: 32px; }
+.section-title-dark { font-size: clamp(24px, 3vw, 32px); }
