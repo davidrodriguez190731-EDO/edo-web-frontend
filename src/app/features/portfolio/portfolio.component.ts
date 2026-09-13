@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ProjectModalComponent } from '../../shared/components/project-modal/project-modal.component';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, ProjectModalComponent],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss'],
 })
@@ -36,8 +37,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   carouselIndex  = 0;
   private carouselTimer: any;
 
-  // Modal galería
-  modalImgIndex = 0;
+  // El modal es un componente aparte; aqui solo se guarda cual esta abierto.
 
   particles: { x: number; y: number; size: number; delay: number; duration: number }[] = [];
 
@@ -91,26 +91,14 @@ export class PortfolioComponent implements OnInit, OnDestroy {
       : this.projects.filter(p => p.category === cat);
   }
 
+  openModal(p: any) { this.selected = p; }
+
+  closeModal()      { this.selected = null; }
+
   countFor(cat: string) {
     return cat === 'Todos'
       ? this.projects.length
       : this.projects.filter(p => p.category === cat).length;
-  }
-
-  openModal(p: any) {
-    this.selected     = p;
-    this.modalImgIndex = 0;
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal() {
-    this.selected = null;
-    document.body.style.overflow = '';
-  }
-
-  prevModalImg() {
-    if (!this.selected?.images?.length) return;
-    this.modalImgIndex = (this.modalImgIndex - 1 + this.selected.images.length) % this.selected.images.length;
   }
 
   /** Cifras del encabezado: se calculan de los proyectos cargados,
@@ -129,21 +117,6 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     return new Set(this.projects.map(p => p.category).filter(Boolean)).size;
   }
 
-  setModalImg(i: number) {
-    this.modalImgIndex = i;
-  }
-
-  /** "Next.js · Supabase · Vercel" -> tres etiquetas separadas */
-  stackList(stack: string): string[] {
-    if (!stack) return [];
-    return stack.split(/[·,|]/).map(t => t.trim()).filter(Boolean);
-  }
-
-  nextModalImg() {
-    if (!this.selected?.images?.length) return;
-    this.modalImgIndex = (this.modalImgIndex + 1) % this.selected.images.length;
-  }
-
   getCategoryIcon(cat: string): string {
     const map: Record<string, string> = {
       'Mantenimiento': '🔧', 'E-commerce': '🛒', 'Web': '🌐',
@@ -152,13 +125,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     return map[cat] ?? '💻';
   }
 
-  waProject(p: any) {
-    const msg = `Hola, vi el proyecto "${p.name}" en su portafolio y me interesa algo similar para mi empresa. ¿Podemos hablar?`;
-    return `https://wa.me/573217733352?text=${encodeURIComponent(msg)}`;
-  }
 
-  @HostListener('document:keydown.escape')
-  onEsc() { this.closeModal(); }
 
   onSearch() {
     this.applyFilters();

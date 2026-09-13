@@ -240,53 +240,9 @@
     </div>
 
     <!-- Modal detalle proyecto -->
-    <div class="modal-backdrop" *ngIf="selected" (click)="closeModal()">
-      <div class="modal" (click)="$event.stopPropagation()">
-        <div class="modal-left">
-          <div class="modal-gallery" *ngIf="selected.images?.length">
-            <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
-              <img *ngFor="let img of selected.images" [src]="imgUrl(img)" alt="{{ selected.name }}">
-            </div>
-            <div class="mgallery-nav" *ngIf="selected.images.length > 1">
-              <button (click)="prevModalImg(); $event.stopPropagation()">&#8249;</button>
-              <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
-              <button (click)="nextModalImg(); $event.stopPropagation()">&#8250;</button>
-            </div>
-          </div>
-          <div class="modal-gallery-placeholder" *ngIf="!selected.images?.length"
-               [style.background]="'linear-gradient(135deg,' + selected.color + '33 0%,' + selected.color + '66 100%)'">
-            <span style="font-size:64px">{{ getCategoryIcon(selected.category) }}</span>
-          </div>
-        </div>
-        <div class="modal-right">
-          <button class="modal-close" (click)="closeModal()">&#x2715;</button>
-          <div class="modal-body">
-            <div class="modal-meta">
-              <span class="pcard-category">{{ selected.category }}</span>
-              <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
-                <span class="sdot"></span>{{ selected.status }}
-              </span>
-            </div>
-            <h2 class="modal-title">{{ selected.name }}</h2>
-            <p class="modal-desc">{{ selected.description }}</p>
-            <div class="modal-highlights" *ngIf="selected.highlights?.length">
-              <h4>Funcionalidades clave</h4>
-              <ul>
-                <li *ngFor="let h of selected.highlights">
-                  <span class="hcheck">&#x2713;</span>{{ h }}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="modal-cta-sticky">
-            <a [href]="waProject(selected)" target="_blank" class="btn-cta-primary">
-              Quiero algo similar
-            </a>
-            <button class="btn-cta-secondary" (click)="closeModal()">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- El modal vive en un componente compartido con el Portafolio. -->
+    <app-project-modal [project]="selected" (closed)="closeModal()"></app-project-modal>
+
     <div class="text-center" style="margin-top:40px;">
       <a routerLink="/portafolio" class="btn btn--blue">Ver todos los proyectos →</a>
     </div>

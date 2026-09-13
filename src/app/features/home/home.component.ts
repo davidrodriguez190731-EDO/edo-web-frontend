@@ -7,11 +7,12 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../core/services/api.service';
 import { environment } from '../../../environments/environment';
+import { ProjectModalComponent } from '../../shared/components/project-modal/project-modal.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProjectModalComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -29,7 +30,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   projects: any[] = [];
   selected: any = null;
-  modalImgIndex = 0;
   apiBase = environment.apiUrl.replace('/api', '');
   blogs:    any[] = [];
 
@@ -136,9 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const icons: any = { 'Ingeniería': '⚙️', 'Compras y Contabilidad': '📊', 'Proyectos': '🏗️', 'Sistema de gestión': '🖥️' };
     return icons[cat] || '💻';
   }
-  openModal(p: any) { this.selected = p; this.modalImgIndex = 0; }
+  // El modal es un componente compartido; aqui solo se abre y se cierra.
+  openModal(p: any) { this.selected = p; }
   closeModal()      { this.selected = null; }
-  prevModalImg()    { if (this.selected?.images?.length) this.modalImgIndex = (this.modalImgIndex - 1 + this.selected.images.length) % this.selected.images.length; }
-  nextModalImg()    { if (this.selected?.images?.length) this.modalImgIndex = (this.modalImgIndex + 1) % this.selected.images.length; }
-  waProject(p: any) { return `https://wa.me/573217733352?text=Hola,%20vi%20el%20proyecto%20"${encodeURIComponent(p.name)}"%20y%20quiero%20algo%20similar`; }
 }
