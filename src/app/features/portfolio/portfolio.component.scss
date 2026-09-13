@@ -338,19 +338,23 @@
 /* ── Izquierda: galeria ──────────────────────────────────────── */
 .modal-left {
   background: #0A1628;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; justify-content: center;
   min-width: 0;               /* sin esto el grid se desborda */
   max-height: 88vh;
 }
 
 .modal-gallery {
-  position: relative; flex: 1;
-  display: flex; flex-direction: column;
-  min-height: 0;
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  width: 100%; min-height: 0;
 }
 
 .mgallery-viewport {
-  position: relative; flex: 1;
+  /* 16:9 exacto: las capturas son de escritorio, asi que el hueco tiene
+     la misma proporcion que la imagen y no quedan franjas de fondo. */
+  position: relative;
+  width: 100%; aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
   overflow: hidden;
   display: flex; align-items: center;
 }
@@ -476,19 +480,24 @@
   box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
 
   .btn-cta-primary, .btn-cta-wa {
-    flex: 1; padding: 13px 14px; border: none; border-radius: 10px;
+    flex: 1 1 0; min-width: 0;
+    padding: 13px 12px; border: none; border-radius: 10px;
     font-weight: 700; font-size: 13.5px; font-family: inherit;
     cursor: pointer; text-decoration: none; text-align: center;
-    display: flex; align-items: center; justify-content: center; gap: 7px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    white-space: nowrap;      /* evita que el texto se parta en dos lineas */
     transition: background 0.2s;
+    svg { flex-shrink: 0; }
   }
   .btn-cta-primary { background: #0F2E5A; color: #fff; &:hover { background: #0A1628; } }
-  .btn-cta-wa      { background: #E87722; color: #fff; &:hover { background: #cf6a1a; } }
+  /* Verde oficial de WhatsApp: el icono de marca en otro color pierde
+     justamente el reconocimiento inmediato que se buscaba. */
+  .btn-cta-wa      { background: #25D366; color: #fff; &:hover { background: #1EBE5A; } }
   .btn-cta-secondary {
-    padding: 13px 16px; background: #F1F5F9; color: #475569;
+    padding: 13px 14px; background: transparent; color: #94A3B8;
     border: none; border-radius: 10px; font-weight: 600; font-size: 13px;
-    font-family: inherit; cursor: pointer; flex-shrink: 0;
-    &:hover { background: #E2E8F0; }
+    font-family: inherit; cursor: pointer; flex: 0 0 auto;
+    &:hover { color: #475569; background: #F1F5F9; }
   }
 }
 
@@ -499,7 +508,7 @@
     grid-template-rows: auto 1fr;
     max-height: 92vh;
   }
-  .modal-left  { max-height: 38vh; border-radius: 22px 22px 0 0; }
+  .modal-left  { max-height: none; border-radius: 22px 22px 0 0; }
   .modal-right { max-height: none; min-height: 0; }
   .modal-body  { padding: 22px 20px 18px; }
   .modal-title { font-size: 21px; }
