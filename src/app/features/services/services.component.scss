@@ -23,72 +23,6 @@
 .section-header { margin-bottom: 56px; }
 .section-title-dark { font-size: clamp(28px, 4vw, 44px); font-weight: 900; color: #0F2E5A; line-height: 1.15; }
 
-/* ══ SERVICES GRID ═════════════════════════════════════════════ */
-.services-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-}
-
-.service-card {
-  background: #fff; border: 1.5px solid #E2E8F0;
-  border-radius: 18px; padding: 28px 22px;
-  cursor: pointer; position: relative;
-  transition: all 0.25s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  animation: cardEntrance 0.4s ease both;
-
-  &:nth-child(1) { animation-delay: 0.05s; }
-  &:nth-child(2) { animation-delay: 0.1s; }
-  &:nth-child(3) { animation-delay: 0.15s; }
-  &:nth-child(4) { animation-delay: 0.2s; }
-
-  &:hover { border-color: #E87722; transform: translateY(-4px); box-shadow: 0 12px 32px rgba(15,46,90,0.12); }
-  &.active { border-color: #0F2E5A; background: #F8FAFF; grid-column: span 2; box-shadow: 0 12px 40px rgba(15,46,90,0.15); }
-}
-
-@keyframes cardEntrance {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-.card-icon {
-  font-size: 36px; line-height: 1; transition: transform 0.3s;
-  .service-card:hover & { transform: scale(1.15) rotate(-5deg); }
-}
-.card-num   { font-size: 11px; font-weight: 900; color: #E87722; letter-spacing: 1.5px; }
-.card-title { font-size: 16px; font-weight: 800; color: #0F2E5A; margin: 0 0 8px; line-height: 1.3; }
-.card-short { font-size: 12px; color: #94A3B8; line-height: 1.6; margin: 0; }
-
-.card-arrow {
-  position: absolute; bottom: 16px; right: 18px;
-  font-size: 20px; color: #CBD5E1; transition: transform 0.25s, color 0.25s;
-  &.rotated { transform: rotate(90deg); color: #E87722; }
-}
-
-.card-detail {
-  margin-top: 20px; padding-top: 20px;
-  border-top: 1px solid #E2E8F0;
-  animation: fadeIn 0.2s ease;
-}
-
-.detail-desc { font-size: 13px; color: #475569; line-height: 1.7; margin-bottom: 16px; }
-
-.feature-list {
-  list-style: none; padding: 0; margin: 0 0 16px;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-  li { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: #475569; line-height: 1.5; }
-}
-
-.check { color: #38A169; font-weight: 900; flex-shrink: 0; }
-
-.btn-wa-card {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: #25D366; color: #fff;
-  font-size: 13px; font-weight: 700;
-  padding: 10px 20px; border-radius: 8px;
-  text-decoration: none; transition: all 0.2s;
-  &:hover { background: #20b958; transform: translateY(-1px); }
-}
-
 /* ══ WHY EDO ═══════════════════════════════════════════════════ */
 .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
@@ -196,3 +130,105 @@
 
 // El encabezado ya separa: la primera seccion no necesita 80px arriba
 .svh + .section { padding-top: 44px; }
+
+// ══ SERVICIOS ABIERTOS ═══════════════════════════════════════
+.services-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px;
+}
+
+.svc {
+  position: relative; background: #fff;
+  border: 1px solid #E8EEF6; border-radius: 16px;
+  padding: 26px 26px 22px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.25s;
+  &:hover { box-shadow: 0 14px 40px rgba(15,46,90,0.10); transform: translateY(-3px); }
+}
+
+.svc-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--accent, #E87722);
+}
+
+.svc-head {
+  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;
+}
+
+.svc-icon {
+  flex-shrink: 0; width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--accent, #E87722) 10%, #fff);
+  color: var(--accent, #E87722);
+  svg { display: block; }
+}
+
+.svc-head-text { flex: 1; min-width: 0; }
+
+.svc-title {
+  font-size: 19px; font-weight: 900; color: #0F2E5A;
+  margin: 0 0 5px; line-height: 1.25;
+}
+
+.svc-short {
+  font-size: 13px; color: var(--accent, #E87722);
+  font-weight: 600; margin: 0; line-height: 1.5;
+}
+
+.svc-num {
+  font-size: 13px; font-weight: 900; color: #CBD5E1;
+  letter-spacing: 1px; flex-shrink: 0;
+}
+
+.svc-desc {
+  font-size: 13.5px; color: #475569; line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+.svc-features {
+  list-style: none; padding: 0; margin: 0 0 22px;
+  display: grid; gap: 9px;
+  flex: 1;
+
+  li {
+    display: flex; align-items: flex-start; gap: 9px;
+    font-size: 13px; color: #334155; line-height: 1.5;
+  }
+}
+
+.svc-check { color: var(--accent, #E87722); flex-shrink: 0; margin-top: 2px; }
+
+.svc-actions {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 16px; border-top: 1px solid #F1F5F9;
+}
+
+.svc-btn-wa {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: #25D366; color: #fff; text-decoration: none;
+  padding: 11px 20px; border-radius: 9px;
+  font-size: 13px; font-weight: 700;
+  transition: background 0.2s;
+  &:hover { background: #1EBE5A; }
+  svg { flex-shrink: 0; }
+}
+
+.svc-btn-casos {
+  font-size: 12.5px; font-weight: 700; color: #64748B;
+  text-decoration: none;
+  &:hover { color: var(--accent, #E87722); }
+}
+
+// El encabezado ya separa; el titulo de seccion no necesita ser enorme
+.section-title-dark { font-size: clamp(24px, 3vw, 32px); }
+.section-header { margin-bottom: 36px; }
+
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+@media (max-width: 480px) {
+  .svc { padding: 22px 20px 18px; }
+  .svc-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .svc-btn-casos { text-align: center; }
+}

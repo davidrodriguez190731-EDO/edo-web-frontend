@@ -9,18 +9,21 @@
   </div>
 </section>
 
-<!-- ══ GRID DE SERVICIOS ══ -->
-<section class="section bg-white">
+<!-- ══ GRID DE SERVICIOS ══
+     Antes cada tarjeta mostraba titulo, una linea y una flecha: todo el
+     contenido estaba detras de un clic que el visitante no sabia que
+     existia. Cuatro cajas blancas sobre fondo blanco y un vacio debajo.
+     Con cuatro servicios no hay nada que esconder: se muestran abiertos.
+     ══ -->
+<section class="section bg-off-white">
   <div class="container">
     <div class="services-grid">
-      <div *ngFor="let s of services; let i = index"
-           class="service-card"
-           [class.active]="activeIndex === i"
-           (click)="toggle(i)">
+      <div *ngFor="let s of services" class="svc" [style.--accent]="s.color">
+        <div class="svc-bar"></div>
 
-        <div class="card-top">
-          <div class="card-icon" [style.color]="s.color">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="none"
+        <div class="svc-head">
+          <div class="svc-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                  stroke="currentColor" stroke-width="1.6"
                  stroke-linecap="round" stroke-linejoin="round"
                  [ngSwitch]="s.icon">
@@ -42,40 +45,46 @@
               </g>
             </svg>
           </div>
-          <div class="card-num">{{ s.num }}</div>
+          <div class="svc-head-text">
+            <h3 class="svc-title">{{ s.name }}</h3>
+            <p class="svc-short">{{ s.short }}</p>
+          </div>
+          <div class="svc-num">{{ s.num }}</div>
         </div>
-        <h3 class="card-title">{{ s.name }}</h3>
-        <p class="card-short">{{ s.short }}</p>
-        <div class="card-arrow" [class.rotated]="activeIndex === i">›</div>
 
-        <div class="card-detail" *ngIf="activeIndex === i">
-          <p class="detail-desc">{{ s.desc }}</p>
-          <ul class="feature-list">
-            <li *ngFor="let f of s.features">
-              <span class="check">✓</span> {{ f }}
-            </li>
-          </ul>
-          <a [href]="s.waLink" target="_blank" class="btn-wa-card" (click)="$event.stopPropagation()">
-            <svg viewBox="0 0 32 32" width="16" height="16" fill="currentColor">
-              <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.027 7.773L0 32l8.479-2.004A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm7.27 19.455c-.398-.199-2.355-1.162-2.72-1.294-.366-.133-.632-.199-.898.199-.266.398-1.031 1.294-1.264 1.56-.233.265-.465.299-.863.1-.398-.199-1.681-.619-3.2-1.975-1.183-1.055-1.981-2.358-2.214-2.756-.233-.398-.025-.613.175-.811.18-.178.398-.465.598-.698.199-.233.265-.398.398-.664.133-.266.066-.499-.033-.698-.1-.2-.898-2.163-1.23-2.962-.324-.779-.654-.673-.898-.686l-.765-.013c-.266 0-.698.1-1.064.499-.366.398-1.396 1.364-1.396 3.327s1.43 3.86 1.629 4.126c.199.265 2.815 4.298 6.822 6.027.953.411 1.697.657 2.277.841.957.305 1.828.262 2.516.159.767-.115 2.355-.962 2.688-1.892.333-.93.333-1.727.233-1.892-.1-.166-.366-.265-.764-.465z"/>
+        <p class="svc-desc">{{ s.desc }}</p>
+
+        <ul class="svc-features">
+          <li *ngFor="let f of s.features">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                 stroke="currentColor" stroke-width="2.6"
+                 stroke-linecap="round" stroke-linejoin="round" class="svc-check">
+              <path d="M5 12.5l4.5 4.5L19 7"/>
             </svg>
-            Consultar por WhatsApp
-          </a>
-          <a routerLink="/portafolio" class="link-casos" (click)="$event.stopPropagation()">
-            Ver casos donde ya funciona →
-          </a>
-        </div>
+            <span>{{ f }}</span>
+          </li>
+        </ul>
 
+        <div class="svc-actions">
+          <a [href]="s.waLink" target="_blank" rel="noopener" class="svc-btn-wa">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+              <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.08-.3-.15-1.25-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.09 3.2 5.07 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/>
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.86 9.86 0 004.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.13h-.01a8.2 8.2 0 01-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24a8.24 8.24 0 018.24 8.25c0 4.54-3.7 8.24-8.24 8.24z"/>
+            </svg>
+            Consultar
+          </a>
+          <a routerLink="/portafolio" class="svc-btn-casos">Ver casos reales →</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══ ¿POR QUÉ EDO? ══ -->
-<section class="section bg-off-white">
+<section class="section bg-white">
   <div class="container">
     <div class="section-header text-center">
-      <h2 class="section-title-dark">¿Por qué elegir<br>EDO Ingeniería Digital?</h2>
+      <h2 class="section-title-dark">¿Por qué EDO?</h2>
     </div>
     <div class="why-grid">
       <div *ngFor="let w of whyEdo" class="why-card">
