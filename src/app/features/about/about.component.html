@@ -8,9 +8,9 @@
   <div class="container abh-inner">
     <h1 class="abh-title">Nosotros</h1>
     <div class="abh-stats" *ngIf="projects.length">
-      <div class="abh-stat"><span class="abh-num">{{ totalProyectos }}</span><span class="abh-label">soluciones</span></div>
-      <div class="abh-stat"><span class="abh-num">{{ sectores }}</span><span class="abh-label">sectores</span></div>
-      <div class="abh-stat"><span class="abh-num">{{ anios }}</span><span class="abh-label">años construyendo</span></div>
+      <div class="abh-stat"><span class="abh-num">{{ mostrado.proyectos }}</span><span class="abh-label">soluciones</span></div>
+      <div class="abh-stat"><span class="abh-num">{{ mostrado.sectores }}</span><span class="abh-label">sectores</span></div>
+      <div class="abh-stat"><span class="abh-num">{{ mostrado.anios }}</span><span class="abh-label">años construyendo</span></div>
     </div>
   </div>
 </section>
@@ -19,7 +19,7 @@
 <section class="section bg-white">
   <div class="container">
     <div class="section-split">
-      <div class="split-text">
+      <div class="split-text reveal" #revelar>
         <div class="section-tag">Qué es EDO</div>
         <h2 class="section-title-dark">De la ingeniería<br>al software</h2>
         <p>EDO Ingeniería Digital construye software de gestión para empresas que hoy operan con hojas de cálculo, cuadernos y grupos de WhatsApp.</p>
@@ -28,7 +28,8 @@
         <a routerLink="/portafolio" class="hist-link">Ver los sistemas en producción →</a>
       </div>
       <div class="split-timeline">
-        <div *ngFor="let t of timeline" class="timeline-item">
+        <div *ngFor="let t of timeline; let i = index" class="timeline-item reveal" #revelar
+             [style.transition-delay]="(i * 90) + 'ms'">
           <div class="tl-year">{{ t.year }}</div>
           <div class="tl-dot"></div>
           <div class="tl-content">
@@ -36,6 +37,26 @@
             <div class="tl-desc">{{ t.desc }}</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTORES ══
+     La pagina terminaba con un vacio grande antes del cierre. Esta franja
+     sale de las categorias reales de los proyectos: no hay que mantenerla
+     a mano y no puede contradecir al portafolio.
+     ══ -->
+<section class="section bg-off-white" *ngIf="sectoresLista.length">
+  <div class="container">
+    <div class="sect-head reveal" #revelar>
+      <h2 class="section-title-dark">Dónde ya está operando</h2>
+      <a routerLink="/portafolio" class="hist-link">Ver los sistemas →</a>
+    </div>
+    <div class="sect-grid">
+      <div *ngFor="let s of sectoresLista; let i = index" class="sect-chip reveal" #revelar
+           [style.transition-delay]="(i * 60) + 'ms'">
+        {{ s }}
       </div>
     </div>
   </div>

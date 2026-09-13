@@ -158,3 +158,54 @@
 
 // El encabezado ya separa
 .abh + .section { padding-top: 48px; }
+
+// ══ Revelado al hacer scroll ═════════════════════════════════
+// Los elementos entran cuando llegan a la vista. Quien tenga las
+// animaciones desactivadas en su sistema los ve fijos desde el inicio
+// (el componente les pone .visible de entrada).
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+// ══ Sectores ═════════════════════════════════════════════════
+.sect-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 26px;
+}
+
+.sect-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.sect-chip {
+  background: #fff; border: 1px solid #E2E8F0;
+  border-radius: 100px; padding: 10px 20px;
+  font-size: 13.5px; font-weight: 700; color: #0F2E5A;
+  transition: opacity 0.55s ease, transform 0.55s ease,
+              border-color 0.2s, box-shadow 0.2s;
+}
+.sect-chip:hover {
+  border-color: #E87722;
+  box-shadow: 0 6px 18px rgba(232,119,34,0.14);
+}
+
+// ══ La linea de la trayectoria se dibuja ═════════════════════
+// Refuerza la idea de recorrido: la linea aparece junto con su hito en
+// vez de estar completa desde el principio.
+.timeline-item.reveal::before,
+.timeline-item.reveal::after {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+.timeline-item.reveal.visible::before,
+.timeline-item.reveal.visible::after {
+  opacity: 1;
+}
