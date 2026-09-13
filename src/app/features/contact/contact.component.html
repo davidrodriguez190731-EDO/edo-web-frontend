@@ -1,20 +1,12 @@
-<!-- HERO -->
-<section class="contact-hero">
-  <div class="hero-bg-dots"></div>
-  <div class="particles">
-    <span *ngFor="let p of particles" class="particle"
-      [style.left.%]="p.x" [style.top.%]="p.y"
-      [style.width.px]="p.size" [style.height.px]="p.size"
-      [style.animation-delay.s]="p.delay"
-      [style.animation-duration.s]="p.duration">
-    </span>
-  </div>
-  <div class="hero-watermark"><img src="assets/logo.webp" alt=""></div>
-
-  <div class="hero-content">
-    <div class="hero-tag"><span class="dot-live"></span> Respuesta en menos de 24h</div>
-    <h1>Hablemos sobre<br><span class="accent">su proyecto</span></h1>
-    <p>Sin compromiso. Le damos un diagn&#243;stico honesto de c&#243;mo podemos ayudarle y cu&#225;nto costar&#237;a.</p>
+<!-- ENCABEZADO
+     Antes: hero de pantalla completa con particulas animadas y marca de
+     agua, el mismo patron que ya se retiro de Proyectos y Servicios. Por
+     eso esta pagina se sentia de otro sitio.
+     -->
+<section class="cth">
+  <div class="container cth-inner">
+    <h1 class="cth-title">Contacto</h1>
+    <p class="cth-sub">Cuéntenos su problema. Respondemos en menos de 24 horas, sin compromiso.</p>
   </div>
 </section>
 

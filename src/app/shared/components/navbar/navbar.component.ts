@@ -56,7 +56,7 @@ import { AuthService } from '@app/core/services/auth.service';
               <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
             </svg>
           </a>
-          <a routerLink="/contacto" class="btn-contact">Contacto</a>
+          <a routerLink="/contacto" routerLinkActive="active" class="btn-contact">Contacto</a>
         </div>
 
         <!-- Hamburguesa -->
@@ -77,7 +77,7 @@ import { AuthService } from '@app/core/services/auth.service';
         <a routerLink="/portafolio" routerLinkActive="active" class="mobile-link" (click)="closeMenu()">Proyectos</a>
         <a routerLink="/nosotros"   routerLinkActive="active" class="mobile-link" (click)="closeMenu()">Nosotros</a>
         <div class="mobile-divider"></div>
-        <a routerLink="/contacto" class="mobile-cta" (click)="closeMenu()">Contacto</a>
+        <a routerLink="/contacto" routerLinkActive="active" class="mobile-cta" (click)="closeMenu()">Contacto</a>
 
         <!-- Redes sociales en menú móvil -->
         <div class="mobile-socials">
@@ -205,6 +205,17 @@ import { AuthService } from '@app/core/services/auth.service';
       padding: 10px 22px; border-radius: 8px;
       text-decoration: none; transition: all 0.2s;
       box-shadow: 0 4px 14px rgba(232,119,34,0.35);
+    }
+
+    /* Contacto no es un enlace del menu sino el boton de accion, asi que
+       estando en esa pagina no se marcaba ninguna pestaña y el visitante
+       perdia la referencia de donde estaba. */
+    .btn-contact.active {
+      background: #C05621;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .mobile-cta.active {
+      background: #C05621;
     }
     .btn-contact:hover { background: #d4681a; transform: translateY(-1px); }
 

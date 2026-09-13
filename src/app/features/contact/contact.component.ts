@@ -19,19 +19,18 @@ export class ContactComponent implements OnInit {
   sent     = false;
   error    = '';
 
-  particles: { x: number; y: number; size: number; delay: number; duration: number }[] = [];
-
   form = {
     name: '', company: '', email: '', projectType: '', message: ''
   };
 
+  /* Los mismos cuatro servicios que anuncia el sitio. Antes ofrecia
+     "App movil PWA" y "App web de gestion", que ya no se venden asi. */
   projectTypes = [
-    'Sistema a la medida',
-    'P\u00e1gina web profesional',
-    'App m\u00f3vil PWA',
-    'App web de gesti\u00f3n',
+    'Aplicaci\u00f3n a la medida',
+    'Sistema de gesti\u00f3n y control',
+    'P\u00e1gina web',
     'Automatizaci\u00f3n de procesos',
-    'Otro',
+    'A\u00fan no lo tengo claro',
   ];
 
   contactData = {
@@ -46,12 +45,6 @@ export class ContactComponent implements OnInit {
   socials = { instagram: '', tiktok: '', facebook: '', linkedin: '' };
 
   ngOnInit() {
-    this.particles = Array.from({ length: 14 }, () => ({
-      x: Math.random() * 100, y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      delay: Math.random() * 4,
-      duration: Math.random() * 6 + 5,
-    }));
     this.loadConfig();
   }
 
