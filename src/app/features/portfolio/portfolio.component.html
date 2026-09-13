@@ -108,8 +108,6 @@
               </li>
             </ul>
 
-            <div class="pcard-tech" *ngIf="p.stack">{{ p.stack }}</div>
-
             <div class="pcard-cta">
               {{ p.url_app ? 'Ver detalle y aplicación' : 'Ver detalle' }} <span class="arrow">→</span>
             </div>
@@ -198,10 +196,6 @@
         </div>
 
         <p class="modal-desc">{{ selected.description }}</p>
-
-        <div class="modal-stack" *ngIf="selected.stack">
-          <span *ngFor="let t of stackList(selected.stack)">{{ t }}</span>
-        </div>
 
         <div class="modal-highlights" *ngIf="selected.highlights?.length">
           <div class="modal-section-label">Funcionalidades clave</div>
