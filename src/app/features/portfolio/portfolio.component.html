@@ -124,6 +124,7 @@
               <span class="sdot"></span>{{ p.status }}
             </div>
             <div class="pcard-badge-featured" *ngIf="p.featured">⭐ Destacado</div>
+            <div class="pcard-badge-kind">{{ p.kind === 'caso' ? 'Caso de éxito' : 'Producto' }}</div>
           </div>
 
           <!-- Contenido -->
@@ -138,8 +139,10 @@
               </li>
             </ul>
 
+            <div class="pcard-tech" *ngIf="p.stack">{{ p.stack }}</div>
+
             <div class="pcard-cta">
-              Ver proyecto <span class="arrow">→</span>
+              {{ p.url_app ? 'Ver detalle y aplicación' : 'Ver detalle' }} <span class="arrow">→</span>
             </div>
           </div>
 
@@ -168,50 +171,93 @@
 
 <!-- ╔═ MODAL ═╗ -->
 <div class="modal-backdrop" *ngIf="selected" (click)="closeModal()">
-  <div class="modal" (click)="$event.stopPropagation()">
+  <div class="modal" (click)="$event.stopPropagation()" [style.--accent]="selected.color">
 
     <!-- Izquierda: galería -->
     <div class="modal-left">
-      <div class="modal-gallery" *ngIf="selected.images?.length">
-        <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
-          <img *ngFor="let img of selected.images" [src]="imgUrl(img)" alt="{{ selected.name }}">
+      <div class="modal-gallery" *ngIf="selected.images?.length; else sinFotos">
+        <div class="mgallery-viewport">
+          <div class="mgallery-counter" *ngIf="selected.images.length > 1">
+            {{ modalImgIndex + 1 }} / {{ selected.images.length }}
+          </div>
+          <div class="mgallery-track" [style.transform]="'translateX(-' + (modalImgIndex * 100) + '%)'">
+            <img *ngFor="let img of selected.images" [src]="imgUrl(img)" alt="{{ selected.name }}">
+          </div>
+          <button class="mgallery-arrow mgallery-arrow--prev" *ngIf="selected.images.length > 1"
+                  (click)="prevModalImg(); $event.stopPropagation()" aria-label="Anterior">&#8249;</button>
+          <button class="mgallery-arrow mgallery-arrow--next" *ngIf="selected.images.length > 1"
+                  (click)="nextModalImg(); $event.stopPropagation()" aria-label="Siguiente">&#8250;</button>
         </div>
-        <div class="mgallery-nav" *ngIf="selected.images.length > 1">
-          <button (click)="prevModalImg(); $event.stopPropagation()">&#8249;</button>
-          <span>{{ modalImgIndex + 1 }} / {{ selected.images.length }}</span>
-          <button (click)="nextModalImg(); $event.stopPropagation()">&#8250;</button>
+        <div class="mgallery-thumbs" *ngIf="selected.images.length > 1">
+          <button *ngFor="let img of selected.images; let i = index"
+                  [class.is-active]="i === modalImgIndex"
+                  (click)="setModalImg(i); $event.stopPropagation()">
+            <img [src]="imgUrl(img)" alt="Vista {{ i + 1 }}">
+          </button>
         </div>
       </div>
-      <div class="modal-gallery-placeholder" *ngIf="!selected.images?.length"
-           [style.background]="'linear-gradient(135deg,' + selected.color + '33 0%,' + selected.color + '66 100%)'">
-        <span style="font-size:64px">{{ getCategoryIcon(selected.category) }}</span>
-      </div>
+      <ng-template #sinFotos>
+        <div class="modal-gallery-placeholder"
+             [style.background]="'linear-gradient(135deg,' + selected.color + '33 0%,' + selected.color + '66 100%)'">
+          <span style="font-size:64px">{{ getCategoryIcon(selected.category) }}</span>
+        </div>
+      </ng-template>
     </div>
 
     <!-- Derecha: contenido -->
     <div class="modal-right">
       <button class="modal-close" (click)="closeModal()">&#x2715;</button>
+
       <div class="modal-body">
         <div class="modal-meta">
+          <span class="modal-kind"
+                [class.modal-kind--producto]="selected.kind !== 'caso'"
+                [class.modal-kind--caso]="selected.kind === 'caso'">
+            {{ selected.kind === 'caso' ? 'Caso de éxito' : 'Producto propio' }}
+          </span>
           <span class="pcard-category">{{ selected.category }}</span>
           <span class="pcard-badge-status" [class.status-prod]="selected.status === 'En producción'">
             <span class="sdot"></span>{{ selected.status }}
           </span>
         </div>
+
         <h2 class="modal-title">{{ selected.name }}</h2>
+        <div class="modal-client" *ngIf="selected.client || selected.year">
+          <ng-container *ngIf="selected.client">Para {{ selected.client }}</ng-container>
+          <ng-container *ngIf="selected.client && selected.year"> · </ng-container>
+          <ng-container *ngIf="selected.year">{{ selected.year }}</ng-container>
+        </div>
+
         <p class="modal-desc">{{ selected.description }}</p>
+
+        <div class="modal-stack" *ngIf="selected.stack">
+          <span *ngFor="let t of stackList(selected.stack)">{{ t }}</span>
+        </div>
+
         <div class="modal-highlights" *ngIf="selected.highlights?.length">
-          <h4>Funcionalidades clave</h4>
+          <div class="modal-section-label">Funcionalidades clave</div>
           <ul>
             <li *ngFor="let h of selected.highlights">
               <span class="hcheck">&#x2713;</span>{{ h }}
             </li>
           </ul>
         </div>
+
+        <div class="modal-metrics" *ngIf="selected.metrics?.length">
+          <div class="modal-section-label">Resultados</div>
+          <ul>
+            <li *ngFor="let m of selected.metrics">{{ m }}</li>
+          </ul>
+        </div>
       </div>
+
       <div class="modal-cta-sticky">
-        <a [href]="waProject(selected)" target="_blank" class="btn-cta-primary">
-          &#x1F4AC; Quiero algo similar
+        <a *ngIf="selected.url_app" [href]="selected.url_app" target="_blank" rel="noopener"
+           class="btn-cta-primary">
+          {{ selected.kind === 'caso' ? 'Ver el sitio' : 'Ver la aplicación' }} &#8599;
+        </a>
+        <a [href]="waProject(selected)" target="_blank" rel="noopener" class="btn-cta-wa">
+          &#x1F4AC; {{ selected.kind === 'caso' ? 'Quiero algo similar' : 'Solicitar demo' }}
         </a>
         <button class="btn-cta-secondary" (click)="closeModal()">Cerrar</button>
       </div>

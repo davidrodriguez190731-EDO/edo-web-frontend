@@ -114,6 +114,16 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     this.modalImgIndex = (this.modalImgIndex - 1 + this.selected.images.length) % this.selected.images.length;
   }
 
+  setModalImg(i: number) {
+    this.modalImgIndex = i;
+  }
+
+  /** "Next.js · Supabase · Vercel" -> tres etiquetas separadas */
+  stackList(stack: string): string[] {
+    if (!stack) return [];
+    return stack.split(/[·,|]/).map(t => t.trim()).filter(Boolean);
+  }
+
   nextModalImg() {
     if (!this.selected?.images?.length) return;
     this.modalImgIndex = (this.modalImgIndex + 1) % this.selected.images.length;
